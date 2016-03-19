@@ -9,6 +9,9 @@
 #import <UIKit/UIKit.h>
 
 @interface SettingsTableViewCell : UITableViewCell
+{
+    UIColor *unfocusedBackgroundColor;
+}
 
 @property (nonatomic, strong) UIColor *selectionColor;
 @property (nonatomic, strong) UIColor *viewBackgroundColor;
@@ -24,6 +27,7 @@
 @interface ViewController : UIViewController <UITableViewDataSource, UITableViewDelegate>
 
 @property (nonatomic, strong) NSArray *itemNames;
+@property (nonatomic, strong) NSArray *detailNames;
 @property (nonatomic, strong) NSArray *imageNames;
 
 

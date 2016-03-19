@@ -25,6 +25,7 @@
     ViewController *viewCon = [ViewController new];
     viewCon.imageNames = @[@"Console", @"GenericSharepoint", @"package", @"packagemaker", @"reboot", @"rss", @"search", @"Shutdown", @"Weather", @"YTPlaceholder"];
     viewCon.itemNames = @[@"Logs", @"Shares", @"Packages", @"PackageMaker", @"Reboot", @"RSS", @"Search", @"Shutdown", @"Weather", @"YouTube"];
+    viewCon.detailNames = @[@"System", @"Local", @"Online", @"", @"", @"", @"Local", @"", @"AZ", @""];
     viewCon.title = @"Settings";
     navController.viewControllers = @[viewCon];
     self.window.rootViewController = navController;

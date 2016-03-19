@@ -9,23 +9,58 @@
 #import "ViewController.h"
 #import "PureLayout.h"
 
+
 @implementation SettingsTableViewCell
 
 @synthesize viewBackgroundColor, selectionColor;
 
+- (id)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier
+{
+    unfocusedBackgroundColor = [UIColor colorWithWhite:1 alpha:0.2];
+    self = [super initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:reuseIdentifier];
+    self.contentView.backgroundColor = unfocusedBackgroundColor;
+    self.layer.cornerRadius = 5;
+    self.layer.masksToBounds = true;
+    return self;
+}
+
 - (void)layoutSubviews
 {
     [super layoutSubviews];
-    if (self.selectionColor == nil)
-        self.selectionColor = [UIColor whiteColor];
-    
-    if (self.viewBackgroundColor == nil)
-        self.viewBackgroundColor = self.contentView.backgroundColor;
+    self.accessoryView.backgroundColor = unfocusedBackgroundColor;
+
+   // NSString *recursiveDesc = [self performSelector:@selector(recursiveDescription)];
+   // NSLog(@"%@", recursiveDesc);
 }
 
 - (void)didUpdateFocusInContext:(UIFocusUpdateContext *)context withAnimationCoordinator:(UIFocusAnimationCoordinator *)coordinator
 {
     [super didUpdateFocusInContext:context withAnimationCoordinator:coordinator];
+    
+    [coordinator addCoordinatedAnimations:^{
+        
+        if (self.focused)
+        {
+            self.contentView.backgroundColor = [UIColor clearColor];
+            self.layer.masksToBounds = false;
+            self.accessoryView.backgroundColor = [UIColor clearColor];
+            
+        } else {
+            
+            self.contentView.backgroundColor = unfocusedBackgroundColor;
+            self.accessoryView.backgroundColor = unfocusedBackgroundColor;
+            self.layer.masksToBounds = true;
+        }
+        /*
+        self.contentView.backgroundColor = self.focused ? [UIColor clearColor] : unfocusedBackgroundColor;
+        //self.backgroundColor = self.focused ? [UIColor clearColor] : unfocusedBackgroundColor;
+        self.layer.masksToBounds = !self.focused;
+        */
+    } completion:^{
+        
+    }];
+  
+   /*
     if (context.nextFocusedView == self)
     {
         [coordinator addCoordinatedAnimations:^{
@@ -45,6 +80,7 @@
             //
         }];
     }
+    */
 }
 
 - (void)awakeFromNib {
@@ -123,7 +159,7 @@
         [self.tableWrapper autoPinEdge:ALEdgeRight toEdge:ALEdgeRight ofView:self.view];
         
         [self.tableView autoPinEdge:ALEdgeLeft toEdge:ALEdgeLeft ofView:self.tableWrapper withOffset:50];
-        [self.tableView autoPinEdgeToSuperviewEdge:ALEdgeRight withInset:50];
+        [self.tableView autoPinEdgeToSuperviewEdge:ALEdgeRight withInset:80];
         [self.tableView autoPinEdge:ALEdgeTop toEdge:ALEdgeTop ofView:self.tableWrapper withOffset:180];
         [self.tableView autoPinEdgeToSuperviewEdge:ALEdgeBottom withInset:50];
         
@@ -232,12 +268,24 @@
     // Configure the cell...
     cell.selectionStyle = UITableViewCellSelectionStyleNone;
     cell.textLabel.text = self.itemNames[indexPath.row];
-    cell.viewBackgroundColor = self.view.backgroundColor;
-    if (self.view.backgroundColor == [UIColor blackColor])
-    {
-        cell.textLabel.textColor = [UIColor whiteColor];
-        cell.selectionColor = [UIColor darkGrayColor];
-    }
+    cell.detailTextLabel.text = self.detailNames[indexPath.row];
+    
+    /*
+     
+     This is a terrible hack, but without doing this I couldn't figure out a way to make the built in accessory
+     types to play nicely with the unfocused background colors to mimic the settings table view style
+     
+     it also creates an issue where the size of the cell when focused is all out of whack. not really 
+     sure how to accomodate that...
+     
+     */
+    
+    UIView *accessoryView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 60, 66)];
+    UIButton *accessoryButton = [[UIButton alloc] initWithFrame:CGRectMake(20, 16.5, 20, 33)];
+    [accessoryButton setImage:[UIImage imageNamed:@"image"] forState:UIControlStateNormal];
+    [accessoryView addSubview:accessoryButton];
+    cell.accessoryView = accessoryView;
+   // cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
     
     return cell;
 }

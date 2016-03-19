@@ -24,6 +24,7 @@
 		891A1DEE1C9CB59E002B9DAB /* shutdown.png in Resources */ = {isa = PBXBuildFile; fileRef = 891A1DE41C9CB59E002B9DAB /* shutdown.png */; };
 		891A1DEF1C9CB59E002B9DAB /* weather.png in Resources */ = {isa = PBXBuildFile; fileRef = 891A1DE51C9CB59E002B9DAB /* weather.png */; };
 		891A1DF01C9CB59E002B9DAB /* YTPlaceholder.png in Resources */ = {isa = PBXBuildFile; fileRef = 891A1DE61C9CB59E002B9DAB /* YTPlaceholder.png */; };
+		891A1DF21C9D0279002B9DAB /* image.png in Resources */ = {isa = PBXBuildFile; fileRef = 891A1DF11C9D0279002B9DAB /* image.png */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -54,6 +55,7 @@
 		891A1DE41C9CB59E002B9DAB /* shutdown.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = shutdown.png; sourceTree = "<group>"; };
 		891A1DE51C9CB59E002B9DAB /* weather.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = weather.png; sourceTree = "<group>"; };
 		891A1DE61C9CB59E002B9DAB /* YTPlaceholder.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = YTPlaceholder.png; sourceTree = "<group>"; };
+		891A1DF11C9D0279002B9DAB /* image.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = image.png; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -101,6 +103,7 @@
 		891A1DB61C9CA5C8002B9DAB /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
+				891A1DF11C9D0279002B9DAB /* image.png */,
 				891A1DDC1C9CB59E002B9DAB /* Images */,
 				891A1DB71C9CA5C8002B9DAB /* main.m */,
 			);
@@ -208,6 +211,7 @@
 				891A1DEE1C9CB59E002B9DAB /* shutdown.png in Resources */,
 				891A1DE91C9CB59E002B9DAB /* package.png in Resources */,
 				891A1DE71C9CB59E002B9DAB /* Console.png in Resources */,
+				891A1DF21C9D0279002B9DAB /* image.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -356,6 +360,7 @@
 				891A1DC91C9CA5C9002B9DAB /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
