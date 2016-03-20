@@ -6,15 +6,16 @@
 //  Copyright © 2016 nito. All rights reserved.
 //
 
+#import "UIColor+Additions.h"
+
 #import <UIKit/UIKit.h>
 
 @interface SettingsTableViewCell : UITableViewCell
 {
     UIColor *unfocusedBackgroundColor;
+
 }
 
-@property (nonatomic, strong) UIColor *selectionColor;
-@property (nonatomic, strong) UIColor *viewBackgroundColor;
 
 @end
 
@@ -24,12 +25,14 @@
 
 @end
 
-@interface ViewController : UIViewController <UITableViewDataSource, UITableViewDelegate>
-
+@interface SettingsViewController : UIViewController <UITableViewDataSource, UITableViewDelegate>
+{
+        NSString *_backingTitle;
+}
 @property (nonatomic, strong) NSArray *itemNames;
 @property (nonatomic, strong) NSArray *detailNames;
 @property (nonatomic, strong) NSArray *imageNames;
-
+@property (nonatomic, strong) UIColor *titleColor;
 
 @end
 

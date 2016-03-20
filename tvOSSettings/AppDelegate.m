@@ -7,8 +7,7 @@
 //
 
 #import "AppDelegate.h"
-#import "ViewController.h"
-
+#import "SettingsViewController.h"
 
 @interface AppDelegate ()
 
@@ -22,11 +21,14 @@
     self.window = [[UIWindow alloc] initWithFrame:[UIScreen mainScreen].bounds];
     
     UINavigationController *navController = [UINavigationController new];
-    ViewController *viewCon = [ViewController new];
+    SettingsViewController *viewCon = [SettingsViewController new];
     viewCon.imageNames = @[@"Console", @"GenericSharepoint", @"package", @"packagemaker", @"reboot", @"rss", @"search", @"Shutdown", @"Weather", @"YTPlaceholder"];
     viewCon.itemNames = @[@"Logs", @"Shares", @"Packages", @"PackageMaker", @"Reboot", @"RSS", @"Search", @"Shutdown", @"Weather", @"YouTube"];
     viewCon.detailNames = @[@"System", @"Local", @"Online", @"", @"", @"", @"Local", @"", @"AZ", @""];
     viewCon.title = @"Settings";
+  //  viewCon.view.backgroundColor = [UIColor clearColor];
+  //  viewCon.titleColor = [UIColor colorFromHex:@"DC1916"];
+    
     navController.viewControllers = @[viewCon];
     self.window.rootViewController = navController;
     
