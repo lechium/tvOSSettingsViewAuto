@@ -7,6 +7,7 @@
 //
 
 #import "UIColor+Additions.h"
+#import "MetadataPreviewView.h"
 
 #import <UIKit/UIKit.h>
 
@@ -22,6 +23,7 @@
 @interface DetailView : UIView
 
 @property (nonatomic, strong) UIImageView *imageView;
+@property (nonatomic, strong) MetadataPreviewView *previewView;
 
 @end
 

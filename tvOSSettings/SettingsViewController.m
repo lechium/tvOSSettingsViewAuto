@@ -9,6 +9,7 @@
 #import "SettingsViewController.h"
 #import "PureLayout.h"
 
+
 /**
  
  An PureLayout based settings view for tvOS, this view is an attempt to mimick the setup of a settings view
@@ -40,10 +41,11 @@
 
 - (void)layoutSubviews
 {
+    LOG_SELF;
     [super layoutSubviews];
     self.accessoryView.backgroundColor = unfocusedBackgroundColor;
     
-    // NSString *recursiveDesc = [self performSelector:@selector(recursiveDescription)];
+  //   NSString *recursiveDesc = [self performSelector:@selector(recursiveDescription)];
     // NSLog(@"%@", recursiveDesc);
 }
 
@@ -86,9 +88,27 @@
 - (id)initForAutoLayout
 {
     self = [super initForAutoLayout];
-    
-    [self addSubview:self.imageView];
+    [self addSubview:self.previewView];
+    //[self addSubview:self.imageView];
     return self;
+}
+
+- (void)updateConstraints{
+    
+    LOG_SELF;
+    [self.previewView autoMatchDimension:ALDimensionHeight toDimension:ALDimensionHeight ofView:self.superview];
+    [self.previewView autoMatchDimension:ALDimensionWidth toDimension:ALDimensionWidth ofView:self.superview];
+    [self.previewView autoCenterInSuperview];
+    [super updateConstraints];
+}
+
+- (MetadataPreviewView *)previewView
+{
+    if (!_previewView) {
+        _previewView = [[MetadataPreviewView alloc] initWithCoverArtNamed:@"package"];
+        
+    }
+    return _previewView;
 }
 
 - (UIImageView *)imageView
@@ -134,6 +154,7 @@
 
 - (void)updateViewConstraints
 {
+    LOG_SELF;
     CGRect viewBounds = self.view.bounds;
     
     //use this variable to keep track of whether or not initial constraints were already set up
@@ -158,8 +179,10 @@
         
         //set the size of the imageView and center it
         
-        [self.detailView.imageView autoSetDimensionsToSize:CGSizeMake(512, 512)];
-        [self.detailView.imageView autoCenterInSuperview];
+        //NSLog(@"self.detailView.imageView : %@", self.detailView.imageView );
+        //[self.detailView]
+        // [self.detailView.imageView autoSetDimensionsToSize:CGSizeMake(512, 512)];
+        //[self.detailView.imageView autoCenterInSuperview];
         
         //set up our title view
         
@@ -317,6 +340,7 @@
     NSIndexPath *indexPath = [self.tableView indexPathForCell:focusedCell];
     NSString *imageName = self.imageNames[indexPath.row];
     self.detailView.imageView.image = [UIImage imageNamed:imageName];
+    self.detailView.previewView.imageView.image = [UIImage imageNamed:imageName];
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath

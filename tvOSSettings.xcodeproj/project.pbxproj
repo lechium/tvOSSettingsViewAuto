@@ -26,6 +26,7 @@
 		891A1DF01C9CB59E002B9DAB /* YTPlaceholder.png in Resources */ = {isa = PBXBuildFile; fileRef = 891A1DE61C9CB59E002B9DAB /* YTPlaceholder.png */; };
 		891A1DF21C9D0279002B9DAB /* image.png in Resources */ = {isa = PBXBuildFile; fileRef = 891A1DF11C9D0279002B9DAB /* image.png */; };
 		891A1DF51C9D0D66002B9DAB /* UIColor+Additions.m in Sources */ = {isa = PBXBuildFile; fileRef = 891A1DF41C9D0D66002B9DAB /* UIColor+Additions.m */; };
+		89453BD51CA20C0600334E66 /* MetadataPreviewView.m in Sources */ = {isa = PBXBuildFile; fileRef = 89453BD41CA20C0600334E66 /* MetadataPreviewView.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -59,6 +60,8 @@
 		891A1DF11C9D0279002B9DAB /* image.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = image.png; sourceTree = "<group>"; };
 		891A1DF31C9D0D66002B9DAB /* UIColor+Additions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIColor+Additions.h"; sourceTree = "<group>"; };
 		891A1DF41C9D0D66002B9DAB /* UIColor+Additions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIColor+Additions.m"; sourceTree = "<group>"; };
+		89453BD31CA20C0600334E66 /* MetadataPreviewView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MetadataPreviewView.h; sourceTree = "<group>"; };
+		89453BD41CA20C0600334E66 /* MetadataPreviewView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MetadataPreviewView.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -95,6 +98,8 @@
 				891A1DF41C9D0D66002B9DAB /* UIColor+Additions.m */,
 				891A1DB91C9CA5C8002B9DAB /* AppDelegate.h */,
 				891A1DBA1C9CA5C9002B9DAB /* AppDelegate.m */,
+				89453BD31CA20C0600334E66 /* MetadataPreviewView.h */,
+				89453BD41CA20C0600334E66 /* MetadataPreviewView.m */,
 				891A1DBC1C9CA5C9002B9DAB /* SettingsViewController.h */,
 				891A1DBD1C9CA5C9002B9DAB /* SettingsViewController.m */,
 				891A1DCA1C9CA65D002B9DAB /* PureLayout */,
@@ -232,6 +237,7 @@
 				891A1DBB1C9CA5C9002B9DAB /* AppDelegate.m in Sources */,
 				891A1DB81C9CA5C8002B9DAB /* main.m in Sources */,
 				891A1DD41C9CA65D002B9DAB /* ALView+PureLayout.m in Sources */,
+				89453BD51CA20C0600334E66 /* MetadataPreviewView.m in Sources */,
 				891A1DD51C9CA65D002B9DAB /* NSArray+PureLayout.m in Sources */,
 				891A1DD61C9CA65D002B9DAB /* NSLayoutConstraint+PureLayout.m in Sources */,
 			);

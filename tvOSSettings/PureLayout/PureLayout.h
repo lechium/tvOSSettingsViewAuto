@@ -25,8 +25,11 @@
 //  IN THE SOFTWARE.
 //
 
+
 #ifndef PureLayout_h
 #define PureLayout_h
+
+#define LOG_SELF        NSLog(@"%@ %@", self, NSStringFromSelector(_cmd))
 
 #import <Foundation/Foundation.h>
 
