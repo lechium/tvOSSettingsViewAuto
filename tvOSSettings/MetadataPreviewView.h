@@ -39,6 +39,8 @@
 @property (nonatomic, strong) UIImage *coverArt;
 
 @property (nonatomic, strong) UIImageView *imageView;
+@property (nonatomic, strong) UIView *metaContainerView;
+
 @property (nonatomic, strong) UIView *topDividerView;
 @property (nonatomic, strong) UIView *middleDividerView;
 @property (nonatomic, strong) UIView *bottomDividerView;

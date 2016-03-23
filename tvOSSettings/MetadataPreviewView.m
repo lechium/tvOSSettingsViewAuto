@@ -64,7 +64,7 @@
 
 - (BOOL)hasMeta
 {
-    if ([[self.metadataDict allKeys] count] > 1)
+    if ([[self.metadataDict allKeys] count] > 0)
     {
         return true;
     }
@@ -95,7 +95,6 @@
 
 - (id)initWithCoverArtNamed:(NSString *)coverArt
 {
-     LOG_SELF;
     self = [self initForAutoLayout];
     self.coverArt = [UIImage imageNamed:coverArt];
     self.imageView.image = self.coverArt;
@@ -105,23 +104,34 @@
 
 - (id)initWithMetadata:(NSDictionary *)meta
 {
-     LOG_SELF;
     self = [self initForAutoLayout];
     self.metadataDict = meta;
+    NSString *coverArt = meta[@"coverart"];
+    self.coverArt = [UIImage imageNamed:coverArt];
     return self;
 }
 
 - (id)initForAutoLayout
 {
-    LOG_SELF;
     self = [super initForAutoLayout];
     [self addSubview:self.imageView];
-   // [self addSubview:self.topDividerView];
-    //[self addSubview:self.middleDividerView];
-    //[self addSubview:self.titleLabel];
-    //[self addSubview:self.descriptionLabel];
+    [self addSubview:self.metaContainerView];
     //[self updateConstraintsIfNeeded];
     return self;
+}
+
+- (UIView *)metaContainerView
+{
+    if (!_metaContainerView)
+    {
+        _metaContainerView = [UIView newAutoLayoutView];
+        [_metaContainerView addSubview:self.topDividerView];
+        [_metaContainerView addSubview:self.middleDividerView];
+        [_metaContainerView addSubview:self.titleLabel];
+        [_metaContainerView addSubview:self.descriptionLabel];
+        
+    }
+    return _metaContainerView;
 }
 
 - (UIView *)topDividerView
@@ -147,8 +157,7 @@
 {
     if (!_titleLabel) {
         _titleLabel = [UILabel newAutoLayoutView];
-        _titleLabel.font = [UIFont fontWithName:@".SFUIDisplay-Medium" size:57.00];
-        _titleLabel.textColor = [UIColor grayColor];
+        _titleLabel.font = [UIFont boldSystemFontOfSize:17];
     }
     return _titleLabel;
 }
@@ -157,11 +166,10 @@
 {
     if (!_descriptionLabel) {
         _descriptionLabel = [UILabel newAutoLayoutView];
-        _descriptionLabel.font = [UIFont fontWithName:@".SFUIDisplay-Medium" size:57.00];
-        _descriptionLabel.textColor = [UIColor grayColor];
         _descriptionLabel.lineBreakMode = NSLineBreakByWordWrapping;
+        _descriptionLabel.numberOfLines = 0;
     }
-    return _titleLabel;
+    return _descriptionLabel;
 }
 
 
@@ -175,6 +183,12 @@
     return _imageView;
 }
 
+- (void)layoutSubviews
+{
+    [super layoutSubviews];
+    //NSString *recursiveDesc = [self performSelector:@selector(recursiveDescription)];
+    //NSLog(@"%@", recursiveDesc);
+}
 
  /*
  Metadata view = 224, 809, 512, 265
@@ -239,15 +253,43 @@
 */
 - (void)updateConstraints
 {
-    LOG_SELF;
-//    NSString *recursiveDesc = [self performSelector:@selector(recursiveDescription)];
-  //  NSLog(@"%@", recursiveDesc);
+
     if (!self.didSetupConstraints)
     {
         [self.imageView autoSetDimensionsToSize:CGSizeMake(512, 512)];
         if (!self.hasMeta)
         {
             [self.imageView autoCenterInSuperview];
+        } else {
+            [self.imageView autoAlignAxisToSuperviewAxis:ALAxisVertical];
+            [self.imageView autoPinEdge:ALEdgeTop toEdge:ALEdgeTop ofView:self.superview withOffset:264];
+            [self.metaContainerView autoPinEdge:ALEdgeTop toEdge:ALEdgeBottom ofView:self.imageView withOffset:10];
+            [self.metaContainerView autoSetDimensionsToSize:CGSizeMake(806, 265)];
+            [self.metaContainerView autoAlignAxisToSuperviewAxis:ALAxisVertical];
+     
+            
+            [self.titleLabel autoSetDimensionsToSize:CGSizeMake(504, 21)];
+            [self.titleLabel autoPinEdgeToSuperviewEdge:ALEdgeLeft withInset:4];
+            [self.titleLabel autoPinEdgeToSuperviewEdge:ALEdgeTop withInset:8];
+            
+            self.titleLabel.text = @"Test package"; //TODO: DONT SET THIS HERE, JUST TESTING!
+            
+            [self.topDividerView autoSetDimensionsToSize:CGSizeMake(806, 1)];
+            [self.topDividerView autoPinEdgeToSuperviewEdge:ALEdgeLeft];
+            [self.topDividerView autoPinEdgeToSuperviewEdge:ALEdgeRight];
+            [self.topDividerView autoPinEdge:ALEdgeTop toEdge:ALEdgeBottom ofView:self.titleLabel withOffset:8];
+            
+            [self.descriptionLabel autoPinEdgeToSuperviewEdge:ALEdgeLeft withInset:4];
+            [self.descriptionLabel autoPinEdge:ALEdgeTop toEdge:ALEdgeBottom ofView:self.topDividerView withOffset:15];
+            [self.descriptionLabel autoSetDimension:ALDimensionWidth toSize:798];
+            self.descriptionLabel.text = @"Simple clean YouTube client; picture the days before google ruined it! Browse suggested videos, #PopularOnYoutube, #music, #sports, Stream entire playlists,  Download videos and audio directly into the music library, share videos links and more!."; //TODO: DONT SET THIS HERE, JUST TESTING!
+            
+            [self.middleDividerView autoSetDimensionsToSize:CGSizeMake(806, 1)];
+            [self.middleDividerView autoPinEdgeToSuperviewEdge:ALEdgeLeft];
+            [self.middleDividerView autoPinEdgeToSuperviewEdge:ALEdgeRight];
+            [self.middleDividerView autoPinEdge:ALEdgeTop toEdge:ALEdgeBottom ofView:self.descriptionLabel withOffset:15];
+       
+            
         }
         self.didSetupConstraints = true;
         

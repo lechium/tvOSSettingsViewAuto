@@ -41,7 +41,6 @@
 
 - (void)layoutSubviews
 {
-    LOG_SELF;
     [super layoutSubviews];
     self.accessoryView.backgroundColor = unfocusedBackgroundColor;
     
@@ -95,7 +94,6 @@
 
 - (void)updateConstraints{
     
-    LOG_SELF;
     [self.previewView autoMatchDimension:ALDimensionHeight toDimension:ALDimensionHeight ofView:self.superview];
     [self.previewView autoMatchDimension:ALDimensionWidth toDimension:ALDimensionWidth ofView:self.superview];
     [self.previewView autoCenterInSuperview];
@@ -105,7 +103,8 @@
 - (MetadataPreviewView *)previewView
 {
     if (!_previewView) {
-        _previewView = [[MetadataPreviewView alloc] initWithCoverArtNamed:@"package"];
+        _previewView = [[MetadataPreviewView alloc] initWithMetadata:@{@"coverArt": @"package"}];
+        //_previewView = [[MetadataPreviewView alloc] initWithCoverArtNamed:@"package"];
         
     }
     return _previewView;
@@ -154,7 +153,6 @@
 
 - (void)updateViewConstraints
 {
-    LOG_SELF;
     CGRect viewBounds = self.view.bounds;
     
     //use this variable to keep track of whether or not initial constraints were already set up
