@@ -18,6 +18,7 @@
 @property (nonatomic, strong) NSArray *values;
 @property (nonatomic, strong) NSArray *labels;
 
+- (id)initWithMetadata:(id)theMeta withLabels:(id)theLabels;
 - (void)_layoutLines;
 - (void)setMetadata:(id)metadata withLabels:(id)theLabels frameWidth:(float)width maxHeight:(float)height;
 
@@ -25,10 +26,13 @@
 
 @interface MetadataLineView: UIView
 {
-    UILabel *_labelLayer;	// 84 = 0x54
-    UILabel *_valueLayer;	// 88 = 0x58
     float _maxLabelWidth;	// 92 = 0x5c
 }
+
+@property (nonatomic, strong) NSString *value;
+@property (nonatomic, strong) NSString *label;
+@property (nonatomic, strong) UILabel *labelLayer;
+@property (nonatomic, strong) UILabel *valueLayer;
 
 - (id)initWithLabel:(id)label value:(id)value;
 
@@ -46,6 +50,10 @@
 @property (nonatomic, strong) UIView *bottomDividerView;
 @property (nonatomic, strong) UILabel *titleLabel;
 @property (nonatomic, strong) UILabel *descriptionLabel;
+
+@property (nonatomic, strong) MetadataLinesView *linesView;
+
+
 @property (nonatomic, strong) UILabel *firstDetailLabel;
 @property (nonatomic, strong) UILabel *secondDetailLabel;
 @property (nonatomic, strong) UILabel *thirdDetailLabel;

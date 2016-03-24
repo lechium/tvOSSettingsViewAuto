@@ -8,20 +8,76 @@
 
 #import "MetadataPreviewView.h"
 #import "PureLayout.h"
+#import "UIColor+Additions.h"
+
+@interface UIWindow (AutoLayoutDebug)
++ (UIWindow *)keyWindow;
+- (NSString *)_autolayoutTrace;
+@end
+
 
 @implementation MetadataLineView
 
-- (id)initWithLabel:(id)label value:(id)value
+@synthesize value, label;
+
+- (id)initForAutoLayout
 {
-    self = [super init];
-    _labelLayer = [[UILabel alloc]initWithFrame:CGRectMake(4, 8, 798, 21)];
-    [_labelLayer setFont:[UIFont boldSystemFontOfSize:17]];
-    _labelLayer.textAlignment = NSTextAlignmentRight;
-    _labelLayer.textColor = [UIColor grayColor];
-    _valueLayer = [[UILabel alloc]initWithFrame:CGRectMake(93, 154, 705, 21)];
-    
+    self = [super initForAutoLayout];
+    [self addSubview:[self labelLayer]];
+    [self addSubview:[self valueLayer]];
     return self;
 }
+
+- (id)initWithLabel:(id)theLabel value:(id)theValue
+{
+    self = [self initForAutoLayout];
+   
+    self.label = theLabel;
+    self.value = theValue;
+
+ 
+    [self.labelLayer setText:theLabel];
+    [self.valueLayer setText:theValue];
+    return self;
+}
+
+- (void)updateConstraints
+{
+    //CGRectMake(4, 8, 798, 21) label
+    //CGRectMake(93, 154, 705, 21)
+    [NSLayoutConstraint deactivateConstraints:self.constraints];
+    
+ //   [self autoCenterInSuperview];
+    [self.labelLayer autoPinEdgeToSuperviewEdge:ALEdgeLeft withInset:95];
+    [self.labelLayer autoSetDimensionsToSize:CGSizeMake(68, 21)];
+    [self.valueLayer autoPinEdge:ALEdgeLeft toEdge:ALEdgeRight ofView:self.labelLayer withOffset:21];
+    //[self autoPinEdgesToSuperviewEdges];
+    [self.valueLayer autoSetDimensionsToSize:CGSizeMake(705, 21)];
+    [super updateConstraints];
+}
+
+- (UILabel *)labelLayer
+{
+    if (!_labelLayer)
+    {
+        _labelLayer = [[UILabel alloc] initForAutoLayout];
+        [_labelLayer setFont:[UIFont boldSystemFontOfSize:17]];
+        _labelLayer.textAlignment = NSTextAlignmentRight;
+        _labelLayer.textColor = [UIColor grayColor];
+    }
+    return _labelLayer;
+}
+
+
+- (UILabel *)valueLayer
+{
+    if (!_valueLayer)
+    {
+        _valueLayer = [[UILabel alloc] initForAutoLayout];
+    }
+    return _valueLayer;
+}
+
 
 @end
 
@@ -29,9 +85,45 @@
 
 @synthesize lineArray, values, labels;
 
-- (void)_layoutLines
+- (void)layoutSubviews
+{
+    [super layoutSubviews];
+    //CGFloat startingY = self.superview.frame.origin.y + self.superview.subviews.lastObject.frame.origin.y + 25;
+    CGFloat startingY = 10;
+    NSLog(@"startingY: %f", startingY);
+    [self printRecursiveDescription];
+    for (MetadataLineView *lineView in self.subviews)
+    {
+        CGRect currentFrame = [lineView frame];
+        //currentFrame.origin.x = 4;
+        currentFrame.origin.y = startingY;
+        [lineView setFrame:currentFrame];
+        startingY+=21;
+    }
+    [self printRecursiveDescription];
+}
+
+- (id)initWithMetadata:(id)theMeta withLabels:(id)theLabels
 {
     
+    self = [super initForAutoLayout];
+    self.values = theMeta;
+    self.labels = theLabels;
+    [self _layoutLines];
+    return self;
+}
+
+- (void)_layoutLines
+{
+    [self removeAllSubviews];
+    
+    int i = 0;
+    for (NSString *label in labels)
+    {
+        MetadataLineView *line = [[MetadataLineView alloc] initWithLabel:label value:values[i]];
+        [self addSubview:line];
+        i++;
+    }
 }
 
 - (void)setMetadata:(id)metadata withLabels:(id)theLabels frameWidth:(float)width maxHeight:(float)height
@@ -40,9 +132,25 @@
     self.labels = theLabels;
     _frameWidth = width;
     _lineHeight = height / values.count;
-    
+    [self _layoutLines];
+   // [self updateConstraintsIfNeeded];
 }
-
+//
+//- (void)updateConstraints
+//{
+//    
+//    //[NSLayoutConstraint deactivateConstraints:self.constraints];
+//    [super updateConstraints];
+//    
+//   /*
+//    for (MetadataLineView *lineView in lineArray)
+//    {
+//        //CGRectMake(4, 8, 798, 21) label
+//        //CGRectMake(93, 154, 705, 21)
+//    }
+//    */
+//    
+//}
 
 
 @end
@@ -57,6 +165,7 @@
 
 @implementation MetadataPreviewView
 
+@synthesize metadataDict;
 
 - (void)_coverArtChanged:(id)changed {
     
@@ -105,7 +214,7 @@
 - (id)initWithMetadata:(NSDictionary *)meta
 {
     self = [self initForAutoLayout];
-    self.metadataDict = meta;
+    metadataDict = meta;
     NSString *coverArt = meta[@"coverart"];
     self.coverArt = [UIImage imageNamed:coverArt];
     return self;
@@ -113,11 +222,46 @@
 
 - (id)initForAutoLayout
 {
+     
     self = [super initForAutoLayout];
     [self addSubview:self.imageView];
     [self addSubview:self.metaContainerView];
     //[self updateConstraintsIfNeeded];
     return self;
+}
+
+- (MetadataLinesView *)linesViewWithMeta:(NSDictionary *)meta
+{
+    
+    if (!_linesView)
+    {
+        NSLog(@"in here: %@", meta);
+        _linesView = [[MetadataLinesView alloc] initWithMetadata:meta[@"Values"] withLabels:meta[@"Labels"]];
+        //_linesView.backgroundColor = [UIColor redColor];
+        _linesView.autoresizesSubviews = true;
+    }
+    return _linesView;
+}
+
+- (MetadataLinesView *)linesView
+{
+    
+    if (!_linesView)
+    {
+        NSLog(@"linesView mtd: %@", self.metadataDict);
+        if (self.metadataDict != nil)
+        {
+        _linesView = [[MetadataLinesView alloc] initWithMetadata:self.metadataDict[@"Values"] withLabels:self.metadataDict[@"Labels"]];
+            
+        } else {
+            
+            _linesView = [[MetadataLinesView alloc] initForAutoLayout];
+            
+        }
+       // _linesView.backgroundColor = [UIColor redColor];
+        _linesView.autoresizesSubviews = true;
+    }
+    return _linesView;
 }
 
 - (UIView *)metaContainerView
@@ -129,6 +273,7 @@
         [_metaContainerView addSubview:self.middleDividerView];
         [_metaContainerView addSubview:self.titleLabel];
         [_metaContainerView addSubview:self.descriptionLabel];
+        [_metaContainerView addSubview:self.linesView];
         
     }
     return _metaContainerView;
@@ -186,8 +331,11 @@
 - (void)layoutSubviews
 {
     [super layoutSubviews];
-    //NSString *recursiveDesc = [self performSelector:@selector(recursiveDescription)];
+   // NSString *recursiveDesc = [self performSelector:@selector(recursiveDescription)];
     //NSLog(@"%@", recursiveDesc);
+    
+    //NSString *autolayoutTrace = [[UIWindow keyWindow] _autolayoutTrace];
+    //NSLog(@"alt: %@", autolayoutTrace);
 }
 
  /*
@@ -251,11 +399,14 @@
     return self;
 }
 */
+
+
 - (void)updateConstraints
 {
-
-    if (!self.didSetupConstraints)
-    {
+    [NSLayoutConstraint deactivateConstraints:self.constraints];
+    
+   // if (!self.didSetupConstraints)
+    //{
         [self.imageView autoSetDimensionsToSize:CGSizeMake(512, 512)];
         if (!self.hasMeta)
         {
@@ -272,7 +423,7 @@
             [self.titleLabel autoPinEdgeToSuperviewEdge:ALEdgeLeft withInset:4];
             [self.titleLabel autoPinEdgeToSuperviewEdge:ALEdgeTop withInset:8];
             
-            self.titleLabel.text = @"Test package"; //TODO: DONT SET THIS HERE, JUST TESTING!
+            self.titleLabel.text = self.metadataDict[@"Name"];
             
             [self.topDividerView autoSetDimensionsToSize:CGSizeMake(806, 1)];
             [self.topDividerView autoPinEdgeToSuperviewEdge:ALEdgeLeft];
@@ -282,25 +433,55 @@
             [self.descriptionLabel autoPinEdgeToSuperviewEdge:ALEdgeLeft withInset:4];
             [self.descriptionLabel autoPinEdge:ALEdgeTop toEdge:ALEdgeBottom ofView:self.topDividerView withOffset:15];
             [self.descriptionLabel autoSetDimension:ALDimensionWidth toSize:798];
-            self.descriptionLabel.text = @"Simple clean YouTube client; picture the days before google ruined it! Browse suggested videos, #PopularOnYoutube, #music, #sports, Stream entire playlists,  Download videos and audio directly into the music library, share videos links and more!."; //TODO: DONT SET THIS HERE, JUST TESTING!
+            self.descriptionLabel.text = self.metadataDict[@"Description"];
             
             [self.middleDividerView autoSetDimensionsToSize:CGSizeMake(806, 1)];
             [self.middleDividerView autoPinEdgeToSuperviewEdge:ALEdgeLeft];
             [self.middleDividerView autoPinEdgeToSuperviewEdge:ALEdgeRight];
             [self.middleDividerView autoPinEdge:ALEdgeTop toEdge:ALEdgeBottom ofView:self.descriptionLabel withOffset:15];
-       
+            
+            //[self.linesView setClipsToBounds:true];
+            [self.linesView autoSetDimension:ALDimensionHeight toSize:150];
+            [self.linesView autoPinEdge:ALEdgeTop toEdge:ALEdgeBottom ofView:self.middleDividerView withOffset:5];
+            [self.linesView autoPinEdgeToSuperviewEdge:ALEdgeLeft withInset:4];
+            [self.linesView autoAlignAxisToSuperviewAxis:ALAxisVertical];
+            [self.linesView setMetadata:self.metadataDict[@"Values"] withLabels:self.metadataDict[@"Labels"] frameWidth:0 maxHeight:0];
+           // NSArray *subviews = self.linesView.subviews;
+            /*
+            int i = 0;
+            MetadataLineView *previousView = nil;
+            for (MetadataLineView *lineView in self.linesView.subviews)
+            {
+                if (i == 0)
+                {
+                    //[lineView autoPinEdge:ALEdgeTop toEdge:ALEdgeBottom ofView:self.middleDividerView withOffset:5];
+                    [lineView autoPinEdgeToSuperviewEdge:ALEdgeTop withInset:5];
+                } else {
+                    previousView = self.linesView.subviews[i-1];
+                    NSLog(@"previousView: %@", previousView);
+                    [lineView autoPinEdge:ALEdgeTop toEdge:ALEdgeBottom ofView:previousView withOffset:21];
+                }
+                i++;
+            }
+            */
+            [self.linesView.subviews autoDistributeViewsAlongAxis:ALAxisVertical alignedTo:ALAttributeVertical withFixedSpacing:21 insetSpacing:NO matchedSizes:NO];
+             [self.linesView autoAlignAxisToSuperviewAxis:ALAxisVertical];
+           // [self.linesView.subviews autoDistributeViewsAlongAxis:ALAxisVertical alignedTo:ALAttributeVertical withFixedSpacing:10 insetSpacing:false];
+            ;
+            
+           
             
         }
-        self.didSetupConstraints = true;
+     //   self.didSetupConstraints = true;
         
-    }
+   // }
  //   [NSLayoutConstraint deactivateConstraints:self.constraints];
     [super updateConstraints];
 }
 
 - (void)updateMeta:(NSDictionary *)meta
 {
-   // NSLog(@"meta: %@", meta);
+    NSLog(@"meta: %@", meta);
    
     self.metadataDict = meta;
     NSString *title = meta[@"Name"];
@@ -312,6 +493,9 @@
     
     self.titleLabel.text = title;
     self.descriptionLabel.text = meta[@"Description"];
+    [self.linesView setMetadata:self.metadataDict[@"Values"] withLabels:self.metadataDict[@"Labels"] frameWidth:0 maxHeight:0];
+    [self updateConstraintsIfNeeded];
+    /*
     self.firstDetailLabel.text = @"Version:";
     self.firstValueLabel.text = meta[@"Version"];
     
@@ -328,6 +512,7 @@
         self.thirdDetailLabel.text = @"Section:";
         self.thirdValueLabel.text = meta[@"Section"];
     }
+     */
     
 }
 

@@ -44,8 +44,7 @@
     [super layoutSubviews];
     self.accessoryView.backgroundColor = unfocusedBackgroundColor;
     
-  //   NSString *recursiveDesc = [self performSelector:@selector(recursiveDescription)];
-    // NSLog(@"%@", recursiveDesc);
+
 }
 
 - (void)didUpdateFocusInContext:(UIFocusUpdateContext *)context withAnimationCoordinator:(UIFocusAnimationCoordinator *)coordinator
@@ -103,7 +102,7 @@
 - (MetadataPreviewView *)previewView
 {
     if (!_previewView) {
-        _previewView = [[MetadataPreviewView alloc] initWithMetadata:@{@"coverArt": @"package"}];
+        _previewView = [[MetadataPreviewView alloc] initWithMetadata:@{@"coverArt": @"package", @"Name": @"tuyu", @"Description": @"Simple clean YouTube client; picture the days before google ruined it! Browse suggested videos, #PopularOnYoutube, #music, #sports, Stream entire playlists,  Download videos and audio directly into the music library, share videos links and more!.", @"Values":@[@"1.2.1", @"Jesus"], @"Labels": @[@"Version:", @"Author:"]}];
         //_previewView = [[MetadataPreviewView alloc] initWithCoverArtNamed:@"package"];
         
     }
@@ -182,6 +181,14 @@
         // [self.detailView.imageView autoSetDimensionsToSize:CGSizeMake(512, 512)];
         //[self.detailView.imageView autoCenterInSuperview];
         
+        
+//
+//        //NSLog(@"subviews: %@", subviews);
+//        
+        //[self.detailView.previewView.linesView.subviews autoDistributeViewsAlongAxis:ALAxisVertical alignedTo:ALAttributeLeft withFixedSpacing:5 insetSpacing:false];
+        
+        
+        
         //set up our title view
         
         [self.titleView autoPinEdgeToSuperviewEdge:ALEdgeTop withInset:56];
@@ -204,6 +211,9 @@
 - (void)viewDidAppear:(BOOL)animated
 {
     [super viewDidAppear:animated];
+   // NSString *recursiveDesc = [self.view performSelector:@selector(recursiveDescription)];
+   // NSLog(@"%@", recursiveDesc);
+
 }
 
 //its necessary to create a title view in case you are the first view inside a navigation controller
@@ -339,6 +349,10 @@
     NSString *imageName = self.imageNames[indexPath.row];
     self.detailView.imageView.image = [UIImage imageNamed:imageName];
     self.detailView.previewView.imageView.image = [UIImage imageNamed:imageName];
+    
+    NSDictionary *updatedMeta = @{@"coverArt": self.imageNames[indexPath.row], @"Name": self.itemNames[indexPath.row], @"Description": @"Simple clean YouTube client; picture the days before google ruined it! Browse suggested videos, #PopularOnYoutube, #music, #sports, Stream entire playlists,  Download videos and audio directly into the music library, share videos links and more!.", @"Values":@[@"6.6.6", @"Me", @"Science"], @"Labels": @[@"Version:", @"Author:", @"Yes:"]};
+    
+    [self.detailView.previewView updateMeta:updatedMeta];
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath

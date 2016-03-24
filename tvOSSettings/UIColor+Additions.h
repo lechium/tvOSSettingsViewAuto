@@ -14,3 +14,9 @@ typedef NS_ENUM(NSInteger, SQFContrastingColorMethod) {
 + (UIColor *)colorFromHex:(NSString *)s;
 - (UIColor *)sqf_contrastingColorWithMethod:(SQFContrastingColorMethod)method;
 @end
+
+@interface UIView (Additions)
+
+- (void)removeAllSubviews;
+- (void)printRecursiveDescription;
+@end

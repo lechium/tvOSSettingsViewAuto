@@ -1,6 +1,24 @@
 
 #import "UIColor+Additions.h"
 
+@implementation UIView (Additions)
+
+- (void)printRecursiveDescription
+{
+     NSString *recursiveDesc = [self performSelector:@selector(recursiveDescription)];
+     NSLog(@"%@", recursiveDesc);
+}
+
+- (void)removeAllSubviews
+{
+    for (UIView *view in self.subviews)
+    {
+        [view removeFromSuperview];
+    }
+}
+
+@end
+
 @implementation UIColor (Additions)
 
 + (UIColor *)lightBlueColor
