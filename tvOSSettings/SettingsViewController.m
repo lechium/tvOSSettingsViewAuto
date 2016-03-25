@@ -349,7 +349,7 @@
     NSIndexPath *indexPath = [self.tableView indexPathForCell:focusedCell];
     NSString *imageName = self.imageNames[indexPath.row];
     
-    NSString *imagePath = @"http://nitosoft.com/ATV2/install/images/RemoteDesktop.png";
+    NSString *imagePath = @"http://nitosoft.com/ATV2/install/images/btstack.png";
     //self.detailView.imageView.image = [UIImage imageNamed:imageName];
     NSLog(@"imagePath: %@", imagePath);
     self.detailView.previewView.imageView.image = [UIImage imageNamed:imageName];
@@ -365,14 +365,14 @@
     } else {
         
         self.detailView.previewView.imageView.image = [UIImage imageNamed:imageName];
-        UIImage *currentImage = [[SDImageCache sharedImageCache] imageFromDiskCacheForKey:imageName];
+        UIImage *currentImage = [[SDImageCache sharedImageCache] imageFromDiskCacheForKey:imagePath];
         if (currentImage == nil)
         {
             SDWebImageManager *shared = [SDWebImageManager sharedManager];
             [shared downloadImageWithURL:[NSURL URLWithString:imagePath] options:SDWebImageAllowInvalidSSLCertificates progress:nil completed:^(UIImage *image, NSError *error, SDImageCacheType cacheType, BOOL finished, NSURL *imageURL) {
                 if (error == nil)
                 {
-                    [[SDImageCache sharedImageCache] storeImage:image forKey:imageName];
+                    [[SDImageCache sharedImageCache] storeImage:image forKey:imagePath];
                     self.detailView.previewView.imageView.image = image;
                 }
                 //
