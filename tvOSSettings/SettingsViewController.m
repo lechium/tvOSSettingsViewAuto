@@ -11,20 +11,7 @@
 #import "UIImageView+WebCache.h"
 #import "SDWebImageManager.h"
 
-/**
- 
- An PureLayout based settings view for tvOS, this view is an attempt to mimick the setup of a settings view
- in tvOS as closely as possible.
- 
- All of the classes used are contained in one file here to make things as easy as possible to use in 
- your own applications.
- 
- the unfocusedBackgroundColor code is based on code taken from this gist
- 
- https://gist.github.com/mhpavl/f7819743027684b9e890
- 
- 
- */
+
  
 
 @implementation SettingsTableViewCell
@@ -102,12 +89,15 @@
     [super updateConstraints];
 }
 
+#pragma mark •• bootstrap data, change here for base data layout.
 - (MetadataPreviewView *)previewView
 {
   if (!_previewView) {
   
       //if this data isnt bootstrapped before laying things out the entire layout is broken, so right now you either
       //have a description from the start or you dont. adding it later will not work properly :(
+      //so if your metadata isnt going to have a description, you need to take it out from here at the start.
+      
         _previewView = [[MetadataPreviewView alloc] initWithMetadata:@{@"name": @"Logs", @"coverArt": @"Console", @"detail": @"System", @"detailOptions": @[], @"Version:": @"6.6.6", @"Author:": @"Jesus", @"description": @"Its probably fine"}];
    
         
@@ -158,7 +148,6 @@
 
 - (void)updateViewConstraints
 {
-    LOG_SELF;
     CGRect viewBounds = self.view.bounds;
     
     //use this variable to keep track of whether or not initial constraints were already set up

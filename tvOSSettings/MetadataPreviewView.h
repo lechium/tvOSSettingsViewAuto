@@ -8,6 +8,33 @@
 
 #import <UIKit/UIKit.h>
 
+/**
+ 
+ MetaDataAsset is the fundamental base class for all information on what is displayed for each item in the table view and its associated MetadataPreviewView.
+ 
+ the formatting is as follows
+ 
+ [coverArt] //can be remove or local
+ 
+ [name]
+ -------------------------------------
+
+ [assetDescription]
+ 
+ -------------------------------------
+  
+  [metaDictionary.key[x]]: metadataDictionary.value[x]]
+ ..
+ 
+ -------------------------------------
+ 
+ 
+ for the time being its good to keep these details consistent, ie always have a description, always have a name, always
+ have the same number of keys in metadataDictionary. if these values change the layout gets funky and doesn't adapt
+ very well yet.
+ 
+ */
+
 @interface MetaDataAsset: NSObject
 
 @property (nonatomic, strong) NSString *name;
