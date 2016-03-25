@@ -39,4 +39,4 @@ Creating a view with metadata and various options to change between when menu it
 
 ![alt text](screenshot.png "Screenshot")
 
-![alt text](settings_demos2.gif "Video")
+![alt text](settings_demo2.gif "Video")
