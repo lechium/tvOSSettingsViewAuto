@@ -93,6 +93,12 @@
 @property (nonatomic, strong) UILabel *descriptionLabel;
 @property (nonatomic, strong) MetadataLinesView *linesView;
 
+//image view constraints for when there is no meta visible
+@property (nonatomic, strong) NSArray *centeredImageConstraints;
+
+//image view constraints for when there is meta visible
+@property (nonatomic, strong) NSArray *hasMetaConstraints;
+
 //the layout constraints are when there is a description
 @property (nonatomic, strong) NSArray *descriptionConstraints;
 

@@ -152,7 +152,7 @@
         [self addSubview:line];
         i++;
     }
-    UIView *theView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, self.bounds.size.width, 1)];
+    UIView *theView = [[UIView alloc] initWithFrame:CGRectMake(-4, 0, 806, 1)];
     [theView setBackgroundColor:[UIColor darkGrayColor]];
     [self addSubview:theView];
     
@@ -364,12 +364,25 @@
     //[self autoCenterInSuperview];
     //[self autoPinEdgesToSuperviewEdges];
     [self.imageView autoSetDimensionsToSize:CGSizeMake(512, 512)];
-    if (!self.hasMeta)
-    {
+    
+    self.centeredImageConstraints = [NSLayoutConstraint autoCreateConstraintsWithoutInstalling:^{
+        
         [self.imageView autoCenterInSuperview];
-    } else {
+    }];
+    
+    self.hasMetaConstraints = [NSLayoutConstraint autoCreateConstraintsWithoutInstalling:^{
+        
         [self.imageView autoAlignAxisToSuperviewAxis:ALAxisVertical];
         [self.imageView autoPinEdge:ALEdgeTop toEdge:ALEdgeTop ofView:self.superview withOffset:264];
+    }];
+    
+    if (!self.hasMeta)
+    {
+        [self.centeredImageConstraints autoInstallConstraints];
+        
+    } else {
+        
+        [self.hasMetaConstraints autoInstallConstraints];
         [self.metaContainerView autoPinEdge:ALEdgeTop toEdge:ALEdgeBottom ofView:self.imageView withOffset:10];
         [self.metaContainerView autoSetDimensionsToSize:CGSizeMake(806, 265)];
         [self.metaContainerView autoAlignAxisToSuperviewAxis:ALAxisVertical];
@@ -430,12 +443,12 @@
         
         [self.linesView setMetadata:self.metadataAsset];
         //[self.linesView setMetadata:self.metadataDict[@"Values"] withLabels:self.metadataDict[@"Labels"] frameWidth:0 maxHeight:0];
-        
-        // [self.bottomDividerView autoSetDimensionsToSize:CGSizeMake(806, 1)];
-        //[self.bottomDividerView autoPinEdgeToSuperviewEdge:ALEdgeLeft];
-        //[self.bottomDividerView autoPinEdgeToSuperviewEdge:ALEdgeRight];
-        //[self.bottomDividerView autoPinEdge:ALEdgeTop toEdge:ALEdgeBottom ofView:self.linesView withOffset:0];
-        
+        /*
+         [self.bottomDividerView autoSetDimensionsToSize:CGSizeMake(806, 1)];
+        [self.bottomDividerView autoPinEdgeToSuperviewEdge:ALEdgeLeft];
+        [self.bottomDividerView autoPinEdgeToSuperviewEdge:ALEdgeRight];
+        [self.bottomDividerView autoPinEdge:ALEdgeTop toEdge:ALEdgeBottom ofView:self.linesView withOffset:20];
+        */
         
         
         
@@ -482,6 +495,21 @@
     self.titleLabel.text = asset.name;
     self.descriptionLabel.text = asset.assetDescription;
     [self.linesView setMetadata:asset];
+    
+    if ([[[asset metaDictionary] allKeys] count] == 0)
+    {
+        self.linesView.alpha = 0;
+    } else {
+        self.linesView.alpha = 1;
+    }
+    
+    if (asset.assetDescription.length == 0 && ([[[asset metaDictionary] allKeys] count] == 0))
+    {
+        self.topDividerView.alpha = 0;
+    } else {
+        self.topDividerView.alpha = 1;
+    }
+    
     //[self.linesView setMetadata:self.metadataDict[@"Values"] withLabels:self.metadataDict[@"Labels"] frameWidth:0 maxHeight:0];
     if ([asset.assetDescription length] > 0)
     {

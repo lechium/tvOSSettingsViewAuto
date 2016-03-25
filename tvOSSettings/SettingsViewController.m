@@ -98,8 +98,8 @@
       //have a description from the start or you dont. adding it later will not work properly :(
       //so if your metadata isnt going to have a description, you need to take it out from here at the start.
       
-        _previewView = [[MetadataPreviewView alloc] initWithMetadata:@{@"name": @"Logs", @"coverArt": @"Console", @"detail": @"System", @"detailOptions": @[], @"Version:": @"6.6.6", @"Author:": @"Jesus", @"description": @"Its probably fine"}];
-   
+       // _previewView = [[MetadataPreviewView alloc] initWithMetadata:@{@"name": @"Logs", @"coverArt": @"Console", @"detail": @"System", @"detailOptions": @[], @"Version:": @"6.6.6", @"Author:": @"Jesus", @"description": @"Its probably fine"}];
+    _previewView = [[MetadataPreviewView alloc] initWithMetadata:@{@"name": @"Logs", @"coverArt": @"Console", @"detail": @"System", @"detailOptions": @[]}];
         
     }
     return _previewView;
