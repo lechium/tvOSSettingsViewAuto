@@ -356,7 +356,7 @@
 
 - (void)updateConstraints
 {
-    [NSLayoutConstraint deactivateConstraints:self.constraints];
+    //[NSLayoutConstraint deactivateConstraints:self.constraints];
     
     // if (!self.didSetupConstraints)
     //{
@@ -374,7 +374,7 @@
         [self.metaContainerView autoSetDimensionsToSize:CGSizeMake(806, 265)];
         [self.metaContainerView autoAlignAxisToSuperviewAxis:ALAxisVertical];
         // [self.metaContainerView setBackgroundColor:[UIColor redColor]];
-        UIView *lineViewGuide = nil;
+        //UIView *lineViewGuide = nil;
         
         [self.titleLabel autoSetDimensionsToSize:CGSizeMake(504, 21)];
         [self.titleLabel autoPinEdgeToSuperviewEdge:ALEdgeLeft withInset:4];
@@ -387,8 +387,14 @@
         [self.topDividerView autoPinEdgeToSuperviewEdge:ALEdgeLeft];
         [self.topDividerView autoPinEdgeToSuperviewEdge:ALEdgeRight];
         [self.topDividerView autoPinEdge:ALEdgeTop toEdge:ALEdgeBottom ofView:self.titleLabel withOffset:8];
-        if ([self.metadataAsset.assetDescription length] > 0)
-        {
+        
+        self.noDescriptionConstraints = [NSLayoutConstraint autoCreateConstraintsWithoutInstalling:^{
+            
+            [self.linesView autoPinEdge:ALEdgeTop toEdge:ALEdgeBottom ofView:self.topDividerView withOffset:5];
+        }];
+        
+        self.descriptionConstraints = [NSLayoutConstraint autoCreateConstraintsWithoutInstalling:^{
+           
             [self.descriptionLabel autoPinEdgeToSuperviewEdge:ALEdgeLeft withInset:4];
             [self.descriptionLabel autoPinEdge:ALEdgeTop toEdge:ALEdgeBottom ofView:self.topDividerView withOffset:15];
             [self.descriptionLabel autoSetDimension:ALDimensionWidth toSize:798];
@@ -399,14 +405,26 @@
             [self.middleDividerView autoPinEdgeToSuperviewEdge:ALEdgeRight];
             [self.middleDividerView autoPinEdge:ALEdgeTop toEdge:ALEdgeBottom ofView:self.descriptionLabel withOffset:15];
             
-            lineViewGuide = self.middleDividerView;
+            [self.linesView autoPinEdge:ALEdgeTop toEdge:ALEdgeBottom ofView:self.middleDividerView withOffset:5];
+            
+            
+            
+        }];
+        
+        if ([self.metadataAsset.assetDescription length] > 0)
+        {
+            //[self.noDescriptionConstraints autoRemoveConstraints];
+            [self.descriptionConstraints autoInstallConstraints];
+            
         } else {
-            lineViewGuide = self.topDividerView;
+        
+            [self.noDescriptionConstraints autoInstallConstraints];
+            
         }
         
         //[self.linesView setClipsToBounds:true];
         //[self.linesView autoSetDimension:ALDimensionHeight toSize:150];
-        [self.linesView autoPinEdge:ALEdgeTop toEdge:ALEdgeBottom ofView:lineViewGuide withOffset:5];
+        //[self.linesView autoPinEdge:ALEdgeTop toEdge:ALEdgeBottom ofView:lineViewGuide withOffset:5];
         [self.linesView autoPinEdgeToSuperviewEdge:ALEdgeLeft withInset:4];
         [self.linesView autoAlignAxisToSuperviewAxis:ALAxisVertical];
         
@@ -442,7 +460,7 @@
          i++;
          }
          */
-        [self.linesView.subviews autoDistributeViewsAlongAxis:ALAxisVertical alignedTo:ALAttributeVertical withFixedSpacing:21 insetSpacing:NO matchedSizes:NO];
+     //   [self.linesView.subviews autoDistributeViewsAlongAxis:ALAxisVertical alignedTo:ALAttributeVertical withFixedSpacing:21 insetSpacing:NO matchedSizes:NO];
         [self.linesView autoAlignAxisToSuperviewAxis:ALAxisVertical];
         // [self.linesView.subviews autoDistributeViewsAlongAxis:ALAxisVertical alignedTo:ALAttributeVertical withFixedSpacing:10 insetSpacing:false];
         ;
@@ -465,8 +483,17 @@
     self.descriptionLabel.text = asset.assetDescription;
     [self.linesView setMetadata:asset];
     //[self.linesView setMetadata:self.metadataDict[@"Values"] withLabels:self.metadataDict[@"Labels"] frameWidth:0 maxHeight:0];
-    [self updateConstraintsIfNeeded];
+    if ([asset.assetDescription length] > 0)
+    {
+        [self.noDescriptionConstraints autoRemoveConstraints];
+        [self.descriptionConstraints autoInstallConstraints];
+    } else {
+        [self.descriptionConstraints autoRemoveConstraints];
+        [self.noDescriptionConstraints autoInstallConstraints];
+    }
+    //[self updateConstraintsIfNeeded];
     //[self updateConstraints];
+   // [self layoutIfNeeded];
 }
 
 

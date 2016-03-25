@@ -19,7 +19,7 @@
 
 - (NSArray *)items
 {
-    NSDictionary *console = @{@"name": @"Logs", @"coverArt": @"http://nitosoft.com/ATV2/install/images/btstack.png", @"detail": @"System", @"detailOptions": @[@"System", @"Crash"], @"Version:": @"6.6.6", @"Author:": @"Jesus", @"description": @"Logs"};
+    NSDictionary *console = @{@"name": @"Logs", @"coverArt": @"http://nitosoft.com/ATV2/install/images/btstack.png", @"detail": @"System", @"detailOptions": @[@"System", @"Crash"], @"Version:": @"6.6.6", @"Author:": @"Jesus", @"descriptions": @"Logs"};
     NSDictionary *shares = @{@"name": @"Shares", @"coverArt": @"GenericSharepoint", @"detail": @"Local", @"detailOptions": @[@"Local", @"AFP", @"SMB"], @"Version:": @"1.2.3", @"Author:": @"Hayzus", @"description": @"Different share point information, could be Local, AFP or SMB"};
     NSDictionary *packages = @{@"name": @"Packages", @"coverArt": @"package", @"detail": @"Local", @"detailOptions": @[@"Local", @"Online"], @"Version:": @"3.2.1", @"Author:": @"Yars", @"description": @"Packages that are installed"};
     NSDictionary *pm = @{@"name": @"PackageMaker", @"coverArt": @"packagemaker", @"detail": @"", @"detailOptions": @[], @"Version:": @"1.1", @"Author:": @"Wut", @"description": @"Create packages"};

@@ -29,9 +29,7 @@
  -------------------------------------
  
  
- for the time being its good to keep these details consistent, ie always have a description, always have a name, always
- have the same number of keys in metadataDictionary. if these values change the layout gets funky and doesn't adapt
- very well yet.
+ there is a tiny bit of funkiness if number of metaDataDictionary keys vary, however it is possible to not have a description from asset to asset and the view will adopt properly now.
  
  */
 
@@ -83,7 +81,7 @@
 
 @property (nonatomic, strong) UIImage *coverArt;
 
-@property (nonatomic, strong) NSString *defaultImageName;
+@property (nonatomic, strong) NSString *defaultImageName; //currently unused?
 
 @property (nonatomic, strong) UIImageView *imageView;
 @property (nonatomic, strong) UIView *metaContainerView;
@@ -93,18 +91,15 @@
 @property (nonatomic, strong) UIView *bottomDividerView;
 @property (nonatomic, strong) UILabel *titleLabel;
 @property (nonatomic, strong) UILabel *descriptionLabel;
-
 @property (nonatomic, strong) MetadataLinesView *linesView;
 
+//the layout constraints are when there is a description
+@property (nonatomic, strong) NSArray *descriptionConstraints;
 
-@property (nonatomic, strong) UILabel *firstDetailLabel;
-@property (nonatomic, strong) UILabel *secondDetailLabel;
-@property (nonatomic, strong) UILabel *thirdDetailLabel;
+//layout constraints without description present in the asset
+@property (nonatomic, strong) NSArray *noDescriptionConstraints;
 
-@property (nonatomic, strong) UILabel *firstValueLabel;
-@property (nonatomic, strong) UILabel *secondValueLabel;
-@property (nonatomic, strong) UILabel *thirdValueLabel;
-
+//the asset that populates the metadata
 @property (nonatomic, strong) MetaDataAsset *metadataAsset;
 
 - (id)initWithCoverArtNamed:(NSString *)coverArt;

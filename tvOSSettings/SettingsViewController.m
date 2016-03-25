@@ -83,8 +83,8 @@
     
    // [NSLayoutConstraint deactivateConstraints:self.constraints];
     
-    [self.previewView autoMatchDimension:ALDimensionHeight toDimension:ALDimensionHeight ofView:self.superview];
-    [self.previewView autoMatchDimension:ALDimensionWidth toDimension:ALDimensionWidth ofView:self.superview];
+    //[self.previewView autoMatchDimension:ALDimensionHeight toDimension:ALDimensionHeight ofView:self.superview];
+    //[self.previewView autoMatchDimension:ALDimensionWidth toDimension:ALDimensionWidth ofView:self.superview];
     [self.previewView autoCenterInSuperview];
     [super updateConstraints];
 }
