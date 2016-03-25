@@ -98,6 +98,12 @@
     if (!_valueLayer)
     {
         _valueLayer = [[UILabel alloc] initForAutoLayout];
+        if (self.backgroundColor == [UIColor blackColor])
+        {
+            [_valueLayer setTextColor:[UIColor whiteColor]];
+        } else {
+            [_valueLayer setTextColor:[UIColor blackColor]];
+        }
     }
     return _valueLayer;
 }
@@ -111,6 +117,7 @@
 
 - (void)layoutSubviews
 {
+    LOG_SELF;
     [super layoutSubviews];
     //CGFloat startingY = self.superview.frame.origin.y + self.superview.subviews.lastObject.frame.origin.y + 25;
     CGFloat startingY = 10;
@@ -127,6 +134,19 @@
         {
             startingY+=15;
         }
+        
+        UIColor *valueColor = [UIColor blackColor];
+        
+        if (self.superview.superview.superview.backgroundColor == [UIColor blackColor])
+        {
+            valueColor = [UIColor whiteColor];
+            //NSLog(@"is black bg");
+        }
+        if ([lineView respondsToSelector:@selector(valueLayer)])
+        {
+            [lineView.valueLayer setTextColor:valueColor];
+        }
+       
     }
     //[self printRecursiveDescription];
 }

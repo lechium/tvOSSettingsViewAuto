@@ -89,6 +89,26 @@
     [super updateConstraints];
 }
 
+- (void)updateMetaColor
+{
+    UIColor *newColor = [UIColor blackColor];
+    if (self.backgroundColor == [UIColor blackColor])
+    {
+        newColor = [UIColor whiteColor];
+    }
+    for (MetadataLineView *lineView in self.previewView.linesView.subviews) {
+        
+        NSLog(@"lineView: %@", lineView);
+        if ([lineView isKindOfClass:[MetadataLineView class]])
+        {
+            [lineView.valueLayer setTextColor:newColor];
+        }
+        
+    }
+    [self.previewView.titleLabel setTextColor:newColor];
+    [self.previewView.descriptionLabel setTextColor:newColor];
+}
+
 #pragma mark •• bootstrap data, change here for base data layout.
 - (MetadataPreviewView *)previewView
 {
@@ -169,20 +189,6 @@
         [self.tableView autoPinEdgeToSuperviewEdge:ALEdgeRight withInset:80];
         [self.tableView autoPinEdge:ALEdgeTop toEdge:ALEdgeTop ofView:self.tableWrapper withOffset:180];
         [self.tableView autoPinEdgeToSuperviewEdge:ALEdgeBottom withInset:50];
-        
-        //set the size of the imageView and center it
-        
-        //NSLog(@"self.detailView.imageView : %@", self.detailView.imageView );
-        //[self.detailView]
-        // [self.detailView.imageView autoSetDimensionsToSize:CGSizeMake(512, 512)];
-        //[self.detailView.imageView autoCenterInSuperview];
-        
-        
-//
-//        //NSLog(@"subviews: %@", subviews);
-//        
-        //[self.detailView.previewView.linesView.subviews autoDistributeViewsAlongAxis:ALAxisVertical alignedTo:ALAttributeLeft withFixedSpacing:5 insetSpacing:false];
-        
         
         
         //set up our title view
@@ -276,6 +282,7 @@
         self.detailView.backgroundColor = newValue;
         self.tableWrapper.backgroundColor = newValue;
         self.tableView.backgroundColor = newValue;
+        [self.detailView updateMetaColor];
     }
     
     //change titleView to a different text color

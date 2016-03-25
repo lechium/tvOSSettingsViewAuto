@@ -32,7 +32,14 @@ Creating a view with metadata and various options to change between when menu it
     
         viewCon.items = [self items];
         viewCon.title = @"Settings";
-      //  viewCon.view.backgroundColor = [UIColor clearColor];
+        
+        /*
+            if you want to set the background color to something different from default
+           it will update all the layers necessary with the new colors and if blackColor is chosen text will be made 
+           white where necessary
+       
+        */
+       //  viewCon.view.backgroundColor = [UIColor blackColor];
       //  viewCon.titleColor = [UIColor colorFromHex:@"DC1916"];
     
         navController.viewControllers = @[viewCon];
@@ -42,6 +49,6 @@ Creating a view with metadata and various options to change between when menu it
         return YES;
     }
 
-![alt text](screenshot.png "Screenshot")
-
+![alt text](screenshot.png "Clear Background Screenshot")
+![alt text](black_bg.png "Black Background Screenshot")
 ![alt text](settings_demo2.gif "Video")

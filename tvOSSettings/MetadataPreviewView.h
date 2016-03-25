@@ -29,8 +29,6 @@
  -------------------------------------
  
  
- there is a tiny bit of funkiness if number of metaDataDictionary keys vary, however it is possible to not have a description from asset to asset and the view will adopt properly now.
- 
  */
 
 @interface MetaDataAsset: NSObject

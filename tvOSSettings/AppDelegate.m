@@ -46,8 +46,16 @@
     
     viewCon.items = [self items];
     viewCon.title = @"Settings";
-  //  viewCon.view.backgroundColor = [UIColor clearColor];
-  //  viewCon.titleColor = [UIColor colorFromHex:@"DC1916"];
+    
+    /*
+     if you want to set the background color to something different from default
+     it will update all the layers necessary with the new colors and if blackColor is chosen text will be made
+     white where necessary
+     
+     */
+    
+    viewCon.view.backgroundColor = [UIColor blackColor];
+    //viewCon.titleColor = [UIColor colorFromHex:@"DC1916"];
     
     navController.viewControllers = @[viewCon];
     self.window.rootViewController = navController;
