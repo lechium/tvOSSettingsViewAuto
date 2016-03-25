@@ -42,6 +42,8 @@
 
 @property (nonatomic, strong) UIImage *coverArt;
 
+@property (nonatomic, strong) NSString *defaultImageName;
+
 @property (nonatomic, strong) UIImageView *imageView;
 @property (nonatomic, strong) UIView *metaContainerView;
 
@@ -68,8 +70,5 @@
 - (id)initWithMetadata:(NSDictionary *)meta;
 - (BOOL)hasMeta;
 - (void)updateMeta:(NSDictionary *)meta;
-- (void)_coverArtChanged:(id)changed;	// 0x33a87d
-- (CGRect)_frameForArt:(id)art inBounds:(CGSize)bounds;	// 0x33a93d
-- (CGRect)_frameForArt:(id)art withMetadataFrame:(CGRect)metadataFrame inBounds:(CGSize)bounds;	// 0x33aa61
-- (CGRect)_metadataFrameForBounds:(CGSize)bounds;
+
 @end

@@ -9,6 +9,7 @@
 #import "MetadataPreviewView.h"
 #import "PureLayout.h"
 #import "UIColor+Additions.h"
+#import "UIImageView+WebCache.h"
 
 @interface UIWindow (AutoLayoutDebug)
 + (UIWindow *)keyWindow;
@@ -90,8 +91,7 @@
     [super layoutSubviews];
     //CGFloat startingY = self.superview.frame.origin.y + self.superview.subviews.lastObject.frame.origin.y + 25;
     CGFloat startingY = 10;
-    NSLog(@"startingY: %f", startingY);
-    [self printRecursiveDescription];
+    NSInteger currentIndex = 0;
     for (MetadataLineView *lineView in self.subviews)
     {
         CGRect currentFrame = [lineView frame];
@@ -99,8 +99,13 @@
         currentFrame.origin.y = startingY;
         [lineView setFrame:currentFrame];
         startingY+=21;
+        currentIndex++;
+        if (currentIndex == self.subviews.count-1)
+        {
+            startingY+=15;
+        }
     }
-    [self printRecursiveDescription];
+    //[self printRecursiveDescription];
 }
 
 - (id)initWithMetadata:(id)theMeta withLabels:(id)theLabels
@@ -124,6 +129,10 @@
         [self addSubview:line];
         i++;
     }
+    UIView *theView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, self.bounds.size.width, 1)];
+    [theView setBackgroundColor:[UIColor darkGrayColor]];
+    [self addSubview:theView];
+    
 }
 
 - (void)setMetadata:(id)metadata withLabels:(id)theLabels frameWidth:(float)width maxHeight:(float)height
@@ -167,9 +176,6 @@
 
 @synthesize metadataDict;
 
-- (void)_coverArtChanged:(id)changed {
-    
-}
 
 - (BOOL)hasMeta
 {
@@ -178,28 +184,6 @@
         return true;
     }
     return false;
-}
-
-- (CGRect)_frameForArt:(id)art inBounds:(CGSize)bounds
-{
-    CGRect viewBounds = self.bounds;
-    CGRect artRect = CGRectZero;
-    if (self.hasMeta)
-    {
-        
-    } else {
-        
-    }
-    
-    return artRect;
-}
-- (CGRect)_frameForArt:(id)art withMetadataFrame:(CGRect)metadataFrame inBounds:(CGSize)bounds
-{
-    return CGRectZero;
-}
-- (CGRect)_metadataFrameForBounds:(CGSize)bounds
-{
-    return CGRectZero;
 }
 
 - (id)initWithCoverArtNamed:(NSString *)coverArt
@@ -230,25 +214,12 @@
     return self;
 }
 
-- (MetadataLinesView *)linesViewWithMeta:(NSDictionary *)meta
-{
-    
-    if (!_linesView)
-    {
-        NSLog(@"in here: %@", meta);
-        _linesView = [[MetadataLinesView alloc] initWithMetadata:meta[@"Values"] withLabels:meta[@"Labels"]];
-        //_linesView.backgroundColor = [UIColor redColor];
-        _linesView.autoresizesSubviews = true;
-    }
-    return _linesView;
-}
 
 - (MetadataLinesView *)linesView
 {
     
     if (!_linesView)
     {
-        NSLog(@"linesView mtd: %@", self.metadataDict);
         if (self.metadataDict != nil)
         {
         _linesView = [[MetadataLinesView alloc] initWithMetadata:self.metadataDict[@"Values"] withLabels:self.metadataDict[@"Labels"]];
@@ -274,6 +245,7 @@
         [_metaContainerView addSubview:self.titleLabel];
         [_metaContainerView addSubview:self.descriptionLabel];
         [_metaContainerView addSubview:self.linesView];
+        //[_metaContainerView addSubview:self.bottomDividerView];
         
     }
     return _metaContainerView;
@@ -286,6 +258,15 @@
         _topDividerView.backgroundColor = [UIColor darkGrayColor];
     }
     return _topDividerView;
+}
+
+- (UIView *)bottomDividerView
+{
+    if (!_bottomDividerView) {
+        _bottomDividerView = [UIView newAutoLayoutView];
+        _bottomDividerView.backgroundColor = [UIColor redColor];
+    }
+    return _bottomDividerView;
 }
 
 
@@ -338,67 +319,6 @@
     //NSLog(@"alt: %@", autolayoutTrace);
 }
 
- /*
- Metadata view = 224, 809, 512, 265
- Title view = (UIlabel) 4, 8, 504, 21 (System Bold 17)
- LineView = (uiview black bg) 0, 37, 512, 1
- Desc view = (UILabel) 4, 52, 504, 50
- LineView = 0, 117, 512, 1
- Label1 = 8, 133, 68, 21 (textAlignment right)
- Value1 = 93, 133, 411, 21
- Label2 = 8, 154, 68, 21
- Value2 = 93, 154, 411, 21
- Label3 = 8, 175, 68, 21
- Value3 = 93, 175, 411, 21
- Last Line = 0, 207, 512, 1
- 
- */
-
-/*
-
-- (id)initWithFrame:(CGRect)frame
-{
-    self = [super initWithFrame:frame];
-    self.titleLabel = [[UILabel alloc]initWithFrame:CGRectMake(4, 8, 798, 21)];
-    [self.titleLabel setFont:[UIFont boldSystemFontOfSize:17]];
-    self.topDividerView = [[UIView alloc] initWithFrame:CGRectMake(0, 37, 806, 1)];
-    self.topDividerView.backgroundColor = [UIColor darkGrayColor];
-    self.descriptionLabel = [[UILabel alloc] initWithFrame:CGRectMake(4, 52, 798, 50)];
-    self.descriptionLabel.lineBreakMode = NSLineBreakByWordWrapping;
-    self.middleDividerView = [[UIView alloc] initWithFrame:CGRectMake(0, 117, 806, 1)];
-    self.middleDividerView.backgroundColor = [UIColor darkGrayColor];
-    self.firstDetailLabel = [[UILabel alloc]initWithFrame:CGRectMake(8, 133, 68, 21)];
-    self.firstDetailLabel.textAlignment = NSTextAlignmentRight;
-    self.firstDetailLabel.textColor = [UIColor grayColor];
-    self.firstValueLabel = [[UILabel alloc]initWithFrame:CGRectMake(93, 133, 705, 21)];
-    
-    self.secondDetailLabel = [[UILabel alloc]initWithFrame:CGRectMake(8, 154, 68, 21)];
-    self.secondDetailLabel.textAlignment = NSTextAlignmentRight;
-    self.secondDetailLabel.textColor = [UIColor grayColor];
-    self.secondValueLabel = [[UILabel alloc]initWithFrame:CGRectMake(93, 154, 705, 21)];
-    
-    self.thirdDetailLabel = [[UILabel alloc]initWithFrame:CGRectMake(8, 175, 68, 21)];
-    self.thirdDetailLabel.textAlignment = NSTextAlignmentRight;
-    self.thirdDetailLabel.textColor = [UIColor grayColor];
-    self.thirdValueLabel = [[UILabel alloc]initWithFrame:CGRectMake(93, 175, 705, 21)];
-    
-    self.bottomDividerView = [[UIView alloc] initWithFrame:CGRectMake(0, 207, 806, 1)];
-    self.bottomDividerView.backgroundColor = [UIColor darkGrayColor];
-    [self addSubview:self.titleLabel];
-    [self addSubview:self.topDividerView];
-    [self addSubview:self.descriptionLabel];
-    [self addSubview:self.middleDividerView];
-    [self addSubview:self.firstDetailLabel];
-    [self addSubview:self.secondDetailLabel];
-    [self addSubview:self.thirdDetailLabel];
-    [self addSubview:self.firstValueLabel];
-    [self addSubview:self.secondValueLabel];
-    [self addSubview:self.thirdValueLabel];
-    [self addSubview:self.bottomDividerView];
-
-    return self;
-}
-*/
 
 
 - (void)updateConstraints
@@ -418,6 +338,7 @@
             [self.metaContainerView autoSetDimensionsToSize:CGSizeMake(806, 265)];
             [self.metaContainerView autoAlignAxisToSuperviewAxis:ALAxisVertical];
      
+            UIView *lineViewGuide = nil;
             
             [self.titleLabel autoSetDimensionsToSize:CGSizeMake(504, 21)];
             [self.titleLabel autoPinEdgeToSuperviewEdge:ALEdgeLeft withInset:4];
@@ -429,7 +350,8 @@
             [self.topDividerView autoPinEdgeToSuperviewEdge:ALEdgeLeft];
             [self.topDividerView autoPinEdgeToSuperviewEdge:ALEdgeRight];
             [self.topDividerView autoPinEdge:ALEdgeTop toEdge:ALEdgeBottom ofView:self.titleLabel withOffset:8];
-            
+         if ([self.metadataDict[@"Description"] length] > 0)
+         {
             [self.descriptionLabel autoPinEdgeToSuperviewEdge:ALEdgeLeft withInset:4];
             [self.descriptionLabel autoPinEdge:ALEdgeTop toEdge:ALEdgeBottom ofView:self.topDividerView withOffset:15];
             [self.descriptionLabel autoSetDimension:ALDimensionWidth toSize:798];
@@ -440,12 +362,30 @@
             [self.middleDividerView autoPinEdgeToSuperviewEdge:ALEdgeRight];
             [self.middleDividerView autoPinEdge:ALEdgeTop toEdge:ALEdgeBottom ofView:self.descriptionLabel withOffset:15];
             
+            lineViewGuide = self.middleDividerView;
+         } else {
+             lineViewGuide = self.topDividerView;
+         }
+            
             //[self.linesView setClipsToBounds:true];
-            [self.linesView autoSetDimension:ALDimensionHeight toSize:150];
-            [self.linesView autoPinEdge:ALEdgeTop toEdge:ALEdgeBottom ofView:self.middleDividerView withOffset:5];
+            //[self.linesView autoSetDimension:ALDimensionHeight toSize:150];
+            [self.linesView autoPinEdge:ALEdgeTop toEdge:ALEdgeBottom ofView:lineViewGuide withOffset:5];
             [self.linesView autoPinEdgeToSuperviewEdge:ALEdgeLeft withInset:4];
             [self.linesView autoAlignAxisToSuperviewAxis:ALAxisVertical];
+            
             [self.linesView setMetadata:self.metadataDict[@"Values"] withLabels:self.metadataDict[@"Labels"] frameWidth:0 maxHeight:0];
+            
+           // [self.bottomDividerView autoSetDimensionsToSize:CGSizeMake(806, 1)];
+            //[self.bottomDividerView autoPinEdgeToSuperviewEdge:ALEdgeLeft];
+            //[self.bottomDividerView autoPinEdgeToSuperviewEdge:ALEdgeRight];
+            //[self.bottomDividerView autoPinEdge:ALEdgeTop toEdge:ALEdgeBottom ofView:self.linesView withOffset:0];
+            
+            
+            
+            
+            
+            
+            
            // NSArray *subviews = self.linesView.subviews;
             /*
             int i = 0;
@@ -481,9 +421,15 @@
 
 - (void)updateMeta:(NSDictionary *)meta
 {
-    NSLog(@"meta: %@", meta);
-   
     self.metadataDict = meta;
+    NSString *imagePath = meta[@"coverArt"];
+    NSLog(@"imagePath: %@", imagePath);
+    if (![imagePath containsString:@"http"] )
+    {
+    //    self.imageView.image = [UIImage imageNamed:self.defaultImageName];
+    } else {
+      //  [self.imageView sd_setImageWithURL:[NSURL URLWithString:imagePath] placeholderImage:[UIImage imageNamed:self.defaultImageName] options:SDWebImageAllowInvalidSSLCertificates];
+    }
     NSString *title = meta[@"Name"];
     if (title.length == 0) title = meta[@"Package"];
     if (title.length == 0) title = meta[@"Origin"];
@@ -495,24 +441,6 @@
     self.descriptionLabel.text = meta[@"Description"];
     [self.linesView setMetadata:self.metadataDict[@"Values"] withLabels:self.metadataDict[@"Labels"] frameWidth:0 maxHeight:0];
     [self updateConstraintsIfNeeded];
-    /*
-    self.firstDetailLabel.text = @"Version:";
-    self.firstValueLabel.text = meta[@"Version"];
-    
-    if ([[meta allKeys] containsObject:@"SourceDomain"])
-    {
-        self.secondDetailLabel.text = @"Suite:";
-        self.secondValueLabel.text = meta[@"Suite"];
-        self.thirdDetailLabel.text = @"Domain:";
-        self.thirdValueLabel.text = meta[@"SourceDomain"];
-        
-    } else {
-        self.secondDetailLabel.text = @"Author:";
-        self.secondValueLabel.text = author;
-        self.thirdDetailLabel.text = @"Section:";
-        self.thirdValueLabel.text = meta[@"Section"];
-    }
-     */
     
 }
 

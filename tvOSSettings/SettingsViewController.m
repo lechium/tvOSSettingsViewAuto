@@ -8,7 +8,8 @@
 
 #import "SettingsViewController.h"
 #import "PureLayout.h"
-
+#import "UIImageView+WebCache.h"
+#import "SDWebImageManager.h"
 
 /**
  
@@ -347,12 +348,67 @@
 {
     NSIndexPath *indexPath = [self.tableView indexPathForCell:focusedCell];
     NSString *imageName = self.imageNames[indexPath.row];
-    self.detailView.imageView.image = [UIImage imageNamed:imageName];
-    self.detailView.previewView.imageView.image = [UIImage imageNamed:imageName];
     
-    NSDictionary *updatedMeta = @{@"coverArt": self.imageNames[indexPath.row], @"Name": self.itemNames[indexPath.row], @"Description": @"Simple clean YouTube client; picture the days before google ruined it! Browse suggested videos, #PopularOnYoutube, #music, #sports, Stream entire playlists,  Download videos and audio directly into the music library, share videos links and more!.", @"Values":@[@"6.6.6", @"Me", @"Science"], @"Labels": @[@"Version:", @"Author:", @"Yes:"]};
+    NSString *imagePath = @"http://nitosoft.com/ATV2/install/images/RemoteDesktop.png";
+    //self.detailView.imageView.image = [UIImage imageNamed:imageName];
+    NSLog(@"imagePath: %@", imagePath);
+    self.detailView.previewView.imageView.image = [UIImage imageNamed:imageName];
+   
+    //self.detailView.previewView.imageView.image = [UIImage imageNamed:imageName];
+    
+    NSDictionary *updatedMeta = @{@"coverArt": @"http://nitosoft.com/ATV2/install/images/RemoteDesktop.png", @"Name": self.itemNames[indexPath.row], @"Description": @"Probably some kind of science", @"Values":@[@"6.6.6", @"Me", @"Science"], @"Labels": @[@"Version:", @"Author:", @"Yes:"]};
     
     [self.detailView.previewView updateMeta:updatedMeta];
+    if (![imagePath containsString:@"http"] )
+    {
+        self.detailView.previewView.imageView.image = [UIImage imageNamed:imageName];
+    } else {
+        
+        self.detailView.previewView.imageView.image = [UIImage imageNamed:imageName];
+        UIImage *currentImage = [[SDImageCache sharedImageCache] imageFromDiskCacheForKey:imageName];
+        if (currentImage == nil)
+        {
+            SDWebImageManager *shared = [SDWebImageManager sharedManager];
+            [shared downloadImageWithURL:[NSURL URLWithString:imagePath] options:SDWebImageAllowInvalidSSLCertificates progress:nil completed:^(UIImage *image, NSError *error, SDImageCacheType cacheType, BOOL finished, NSURL *imageURL) {
+                if (error == nil)
+                {
+                    [[SDImageCache sharedImageCache] storeImage:image forKey:imageName];
+                    self.detailView.previewView.imageView.image = image;
+                }
+                //
+            }];
+        } else {
+            self.detailView.previewView.imageView.image = currentImage;
+        }
+       /*
+        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0), ^{
+        
+            @autoreleasepool {
+                
+                NSData *scienceData = [NSData dataWithContentsOfURL:[NSURL URLWithString:imagePath]];
+                UIImage *theImage = [UIImage imageWithData:scienceData];
+           
+           
+                dispatch_async(dispatch_get_main_queue(), ^{
+                   
+                    [UIView animateWithDuration:1.0 animations:^{
+                        
+                        self.detailView.previewView.imageView.image = theImage;
+                        
+                    }];
+                    
+                    
+                });
+                
+            }
+            
+            
+        });
+        */
+
+        //[self.detailView.previewView.imageView sd_setImageWithURL:[NSURL URLWithString:imagePath]];
+        //[self.detailView.previewView.imageView sd_setImageWithURL:[NSURL URLWithString:imagePath] placeholderImage:[UIImage imageNamed:imageName] options:SDWebImageAllowInvalidSSLCertificates];
+    }
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
