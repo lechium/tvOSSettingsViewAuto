@@ -117,7 +117,6 @@
 
 - (void)layoutSubviews
 {
-    LOG_SELF;
     [super layoutSubviews];
     //CGFloat startingY = self.superview.frame.origin.y + self.superview.subviews.lastObject.frame.origin.y + 25;
     CGFloat startingY = 10;
