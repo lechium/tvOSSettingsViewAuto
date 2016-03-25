@@ -8,7 +8,7 @@
 
 #import "SDWebImageCompat.h"
 #import "SDWebImageManager.h"
-#import "UIColor+Additions.h"
+#import "TVSettings+Additions.h"
 //#import "UIImage+Scale.h"
 /**
  * Integrates SDWebImage async downloading and caching of remote images with UIImageView.

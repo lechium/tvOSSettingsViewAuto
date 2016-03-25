@@ -1,5 +1,5 @@
 
-#import "UIColor+Additions.h"
+#import "TVSettings+Additions.h"
 
 @implementation UIView (Additions)
 

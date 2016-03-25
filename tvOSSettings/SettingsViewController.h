@@ -6,7 +6,7 @@
 //  Copyright © 2016 nito. All rights reserved.
 //
 
-#import "UIColor+Additions.h"
+#import "TVSettings+Additions.h"
 #import "MetadataPreviewView.h"
 
 #import <UIKit/UIKit.h>
@@ -31,9 +31,9 @@
 {
         NSString *_backingTitle;
 }
-@property (nonatomic, strong) NSArray *itemNames;
-@property (nonatomic, strong) NSArray *detailNames;
-@property (nonatomic, strong) NSArray *imageNames;
+
+@property (nonatomic, strong) NSArray *items;
+
 @property (nonatomic, strong) UIColor *titleColor;
 
 @end

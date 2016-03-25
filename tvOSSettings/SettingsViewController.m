@@ -94,6 +94,8 @@
 
 - (void)updateConstraints{
     
+   // [NSLayoutConstraint deactivateConstraints:self.constraints];
+    
     [self.previewView autoMatchDimension:ALDimensionHeight toDimension:ALDimensionHeight ofView:self.superview];
     [self.previewView autoMatchDimension:ALDimensionWidth toDimension:ALDimensionWidth ofView:self.superview];
     [self.previewView autoCenterInSuperview];
@@ -102,9 +104,12 @@
 
 - (MetadataPreviewView *)previewView
 {
-    if (!_previewView) {
-        _previewView = [[MetadataPreviewView alloc] initWithMetadata:@{@"coverArt": @"package", @"Name": @"tuyu", @"Description": @"Simple clean YouTube client; picture the days before google ruined it! Browse suggested videos, #PopularOnYoutube, #music, #sports, Stream entire playlists,  Download videos and audio directly into the music library, share videos links and more!.", @"Values":@[@"1.2.1", @"Jesus"], @"Labels": @[@"Version:", @"Author:"]}];
-        //_previewView = [[MetadataPreviewView alloc] initWithCoverArtNamed:@"package"];
+  if (!_previewView) {
+  
+      //if this data isnt bootstrapped before laying things out the entire layout is broken, so right now you either
+      //have a description from the start or you dont. adding it later will not work properly :(
+        _previewView = [[MetadataPreviewView alloc] initWithMetadata:@{@"name": @"Logs", @"coverArt": @"Console", @"detail": @"System", @"detailOptions": @[], @"Version:": @"6.6.6", @"Author:": @"Jesus", @"description": @"Its probably fine"}];
+   
         
     }
     return _previewView;
@@ -153,6 +158,7 @@
 
 - (void)updateViewConstraints
 {
+    LOG_SELF;
     CGRect viewBounds = self.view.bounds;
     
     //use this variable to keep track of whether or not initial constraints were already set up
@@ -341,38 +347,33 @@
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
     
-    return self.itemNames.count;
+    return self.items.count;
 }
 
 - (void)focusedCell:(SettingsTableViewCell *)focusedCell
 {
     NSIndexPath *indexPath = [self.tableView indexPathForCell:focusedCell];
-    NSString *imageName = self.imageNames[indexPath.row];
+
+    MetaDataAsset *currentAsset = self.items[indexPath.row];
+
+    self.detailView.previewView.imageView.image = [UIImage imageNamed:currentAsset.imagePath];
     
-    NSString *imagePath = @"http://nitosoft.com/ATV2/install/images/btstack.png";
-    //self.detailView.imageView.image = [UIImage imageNamed:imageName];
-    NSLog(@"imagePath: %@", imagePath);
-    self.detailView.previewView.imageView.image = [UIImage imageNamed:imageName];
-   
-    //self.detailView.previewView.imageView.image = [UIImage imageNamed:imageName];
-    
-    NSDictionary *updatedMeta = @{@"coverArt": @"http://nitosoft.com/ATV2/install/images/RemoteDesktop.png", @"Name": self.itemNames[indexPath.row], @"Description": @"Probably some kind of science", @"Values":@[@"6.6.6", @"Me", @"Science"], @"Labels": @[@"Version:", @"Author:", @"Yes:"]};
-    
-    [self.detailView.previewView updateMeta:updatedMeta];
-    if (![imagePath containsString:@"http"] )
+    [self.detailView.previewView updateAsset:currentAsset];
+
+    if (![currentAsset.imagePath containsString:@"http"] )
     {
-        self.detailView.previewView.imageView.image = [UIImage imageNamed:imageName];
+        self.detailView.previewView.imageView.image = [UIImage imageNamed:currentAsset.imagePath];
     } else {
         
-        self.detailView.previewView.imageView.image = [UIImage imageNamed:imageName];
-        UIImage *currentImage = [[SDImageCache sharedImageCache] imageFromDiskCacheForKey:imagePath];
+        self.detailView.previewView.imageView.image = [UIImage imageNamed:currentAsset.imagePath];
+        UIImage *currentImage = [[SDImageCache sharedImageCache] imageFromDiskCacheForKey:currentAsset.imagePath];
         if (currentImage == nil)
         {
             SDWebImageManager *shared = [SDWebImageManager sharedManager];
-            [shared downloadImageWithURL:[NSURL URLWithString:imagePath] options:SDWebImageAllowInvalidSSLCertificates progress:nil completed:^(UIImage *image, NSError *error, SDImageCacheType cacheType, BOOL finished, NSURL *imageURL) {
+            [shared downloadImageWithURL:[NSURL URLWithString:currentAsset.imagePath] options:SDWebImageAllowInvalidSSLCertificates progress:nil completed:^(UIImage *image, NSError *error, SDImageCacheType cacheType, BOOL finished, NSURL *imageURL) {
                 if (error == nil)
                 {
-                    [[SDImageCache sharedImageCache] storeImage:image forKey:imagePath];
+                    [[SDImageCache sharedImageCache] storeImage:image forKey:currentAsset.imagePath];
                     self.detailView.previewView.imageView.image = image;
                 }
                 //
@@ -413,6 +414,27 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
+    MetaDataAsset *currentAsset = self.items[indexPath.row];
+    NSString *currentDetail = currentAsset.detailString;
+    if (currentDetail.length > 0)
+    {
+        if ([currentAsset detailOptions].count > 0)
+        {
+            NSInteger currentIndex = [[currentAsset detailOptions] indexOfObject:currentDetail];
+            currentIndex++;
+            if ([currentAsset detailOptions].count > currentIndex)
+            {
+                NSString *newDetail = currentAsset.detailOptions[currentIndex];
+                currentAsset.detailString = newDetail;
+                [self.tableView reloadData];
+            } else {
+                NSString *newDetail = currentAsset.detailOptions[0];
+                currentAsset.detailString = newDetail;
+                [self.tableView reloadData];
+            }
+        }
+
+    }
     
 }
 
@@ -420,9 +442,10 @@
     SettingsTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"SettingsCell" forIndexPath:indexPath];
     
     // Configure the cell...
+    MetaDataAsset *currentAsset = self.items[indexPath.row];
     cell.selectionStyle = UITableViewCellSelectionStyleNone;
-    cell.textLabel.text = self.itemNames[indexPath.row];
-    cell.detailTextLabel.text = self.detailNames[indexPath.row];
+    cell.textLabel.text = currentAsset.name;
+    cell.detailTextLabel.text = currentAsset.detailString;
     
     /*
      
