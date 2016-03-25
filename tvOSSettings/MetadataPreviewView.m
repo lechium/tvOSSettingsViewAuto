@@ -52,15 +52,13 @@
     return self;
 }
 
-- (id)initWithLabel:(id)theLabel value:(id)theValue
+- (id)initWithLabel:(id)theLabel value:(id)theValue minimumLabelWidth:(CGFloat)width
 {
     self = [self initForAutoLayout];
-    
-    self.label = theLabel;
+    _minLabelWidth = width;
+    self.label = [[theLabel capitalizedString] stringByAppendingString:@":"];
     self.value = theValue;
-    
-    
-    [self.labelLayer setText:theLabel];
+    [self.labelLayer setText:self.label];
     [self.valueLayer setText:theValue];
     return self;
 }
@@ -73,10 +71,12 @@
     
     //   [self autoCenterInSuperview];
     [self.labelLayer autoPinEdgeToSuperviewEdge:ALEdgeLeft withInset:95];
-    [self.labelLayer autoSetDimensionsToSize:CGSizeMake(68, 21)];
-    [self.valueLayer autoPinEdge:ALEdgeLeft toEdge:ALEdgeRight ofView:self.labelLayer withOffset:21];
+    //[self.labelLayer autoSetDimension:ALDimensionHeight toSize:21];
+    [self.labelLayer autoSetDimensionsToSize:CGSizeMake(_minLabelWidth, 21)];
+    [self.valueLayer autoPinEdge:ALEdgeLeft toEdge:ALEdgeRight ofView:self.labelLayer withOffset:15];
     //[self autoPinEdgesToSuperviewEdges];
-    [self.valueLayer autoSetDimensionsToSize:CGSizeMake(705, 21)];
+    [self.valueLayer autoSetDimension:ALDimensionHeight toSize:21];
+    //[self.valueLayer autoSetDimensionsToSize:CGSizeMake(705, 21)];
     [super updateConstraints];
 }
 
@@ -146,9 +146,25 @@
     [self removeAllSubviews];
     
     int i = 0;
+    NSString *longestLabel = @"";
     for (NSString *label in labels)
     {
-        MetadataLineView *line = [[MetadataLineView alloc] initWithLabel:label value:values[i]];
+        if (label.length > longestLabel.length)
+        {
+            longestLabel = [[label capitalizedString] stringByAppendingString:@":"];
+        }
+    }
+    UIFont *font = [UIFont boldSystemFontOfSize:17];
+    UIColor *color = [UIColor blackColor];
+    NSDictionary *attributesDictionary = [NSDictionary dictionaryWithObjectsAndKeys:
+                                          font, NSFontAttributeName,
+                                          color, NSForegroundColorAttributeName,
+                                          nil];
+    CGSize theSize = [longestLabel sizeWithAttributes:attributesDictionary];
+    
+    for (NSString *label in labels)
+    {
+        MetadataLineView *line = [[MetadataLineView alloc] initWithLabel:label value:values[i] minimumLabelWidth:theSize.width + 5];
         [self addSubview:line];
         i++;
     }

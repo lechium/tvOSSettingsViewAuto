@@ -66,6 +66,7 @@
 @interface MetadataLineView: UIView
 {
     float _maxLabelWidth;	// 92 = 0x5c
+    CGFloat _minLabelWidth;	// 92 = 0x5c
 }
 
 @property (nonatomic, strong) NSString *value;
@@ -73,7 +74,7 @@
 @property (nonatomic, strong) UILabel *labelLayer;
 @property (nonatomic, strong) UILabel *valueLayer;
 
-- (id)initWithLabel:(id)label value:(id)value;
+- (id)initWithLabel:(id)theLabel value:(id)theValue minimumLabelWidth:(CGFloat)width;
 
 @end
 
