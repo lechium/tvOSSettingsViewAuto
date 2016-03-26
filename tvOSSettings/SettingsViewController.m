@@ -272,7 +272,7 @@
                 //keep a backup copy of the title
                 _backingTitle = newValue;
                 self.titleView.text = newValue;
-                self.title = @"";
+                //self.title = @""; //cant do that, will disappear from tab view controllers
             }
         }
     }
