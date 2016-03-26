@@ -22,7 +22,6 @@
  
 
  */
-
 #import "TVSettings+Additions.h"
 #import "MetadataPreviewView.h"
 
@@ -49,12 +48,16 @@
 
 @interface SettingsViewController : UIViewController <UITableViewDataSource, UITableViewDelegate>
 {
-        NSString *_backingTitle;
+    NSString *_backingTitle;
+    BOOL _observersRegistered;
 }
 
+@property (nonatomic, strong) UITableView *tableView;
 @property (nonatomic, strong) NSString *defaultImageName;
 @property (nonatomic, strong) NSArray *items;
 @property (nonatomic, strong) UIColor *titleColor;
+@property (nonatomic, strong) UILabel *titleView;
+@property (nonatomic, strong) DetailView *detailView;
 
 @end
 

@@ -141,11 +141,9 @@
 
 @interface SettingsViewController ()
 
-@property (nonatomic, strong) DetailView *detailView;
+
 @property (nonatomic, strong) UIView *tableWrapper;
-@property (nonatomic, strong) UITableView *tableView;
 @property (nonatomic, assign) BOOL didSetupConstraints;
-@property (nonatomic, strong) UILabel *titleView;
 
 
 @end
@@ -203,11 +201,19 @@
     
 }
 
+- (void)viewWillDisappear:(BOOL)animated
+{
+    [self.view removeObserver:self forKeyPath:@"backgroundColor" context:NULL];
+    [self removeObserver:self forKeyPath:@"titleColor" context:NULL];
+    [self removeObserver:self forKeyPath:@"title" context:NULL];
+    _observersRegistered = false;
+}
+
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
     self.titleView.text = _backingTitle;
-    //[self.tableView printRecursiveDescription];
+    [self registerObservers];
     
 }
 
@@ -272,7 +278,7 @@
                 //keep a backup copy of the title
                 _backingTitle = newValue;
                 self.titleView.text = newValue;
-                //self.title = @""; //cant do that, will disappear from tab view controllers
+                //self.title = @"";
             }
         }
     }
@@ -296,9 +302,9 @@
 
 }
 
-- (void)viewDidLoad {
-    [super viewDidLoad];
-    
+- (void)registerObservers
+{
+    if (_observersRegistered == true) return;
     //use KVO to update subview backgroundColor to mimic the superview backgroundColor
     
     [self.view addObserver:self
@@ -321,10 +327,17 @@
               options:NSKeyValueObservingOptionNew | NSKeyValueObservingOptionInitial | NSKeyValueObservingOptionOld
               context:NULL];
     
-    
+    _observersRegistered = true;
+}
+
+- (void)viewDidLoad {
+    [super viewDidLoad];
+    [self registerObservers];
     
     
 }
+
+
 
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
@@ -373,7 +386,9 @@
         self.detailView.previewView.imageView.image = [UIImage imageNamed:currentAsset.imagePath];
     } else {
         
-        self.detailView.previewView.imageView.image = [UIImage imageNamed:currentAsset.imagePath];
+        NSLog(@"imagePath: %@", currentAsset.imagePath);
+        
+        self.detailView.previewView.imageView.image = [UIImage imageNamed:self.defaultImageName];
         UIImage *currentImage = [[SDImageCache sharedImageCache] imageFromDiskCacheForKey:currentAsset.imagePath];
         if (currentImage == nil)
         {
