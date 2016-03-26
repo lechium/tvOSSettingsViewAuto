@@ -26,7 +26,6 @@
 		891A1DF01C9CB59E002B9DAB /* YTPlaceholder.png in Resources */ = {isa = PBXBuildFile; fileRef = 891A1DE61C9CB59E002B9DAB /* YTPlaceholder.png */; };
 		891A1DF21C9D0279002B9DAB /* image.png in Resources */ = {isa = PBXBuildFile; fileRef = 891A1DF11C9D0279002B9DAB /* image.png */; };
 		891A1DF51C9D0D66002B9DAB /* TVSettings+Additions.m in Sources */ = {isa = PBXBuildFile; fileRef = 891A1DF41C9D0D66002B9DAB /* TVSettings+Additions.m */; };
-		891F89D11CA6FE970007D488 /* README.md in Sources */ = {isa = PBXBuildFile; fileRef = 891F89D01CA6FE970007D488 /* README.md */; };
 		89453BD51CA20C0600334E66 /* MetadataPreviewView.m in Sources */ = {isa = PBXBuildFile; fileRef = 89453BD41CA20C0600334E66 /* MetadataPreviewView.m */; };
 		89453BF61CA4CB7600334E66 /* NSData+ImageContentType.m in Sources */ = {isa = PBXBuildFile; fileRef = 89453BD81CA4CB7600334E66 /* NSData+ImageContentType.m */; };
 		89453BF71CA4CB7600334E66 /* SDImageCache.m in Sources */ = {isa = PBXBuildFile; fileRef = 89453BDA1CA4CB7600334E66 /* SDImageCache.m */; };
@@ -334,7 +333,6 @@
 				89453BFE1CA4CB7600334E66 /* UIButton+WebCache.m in Sources */,
 				89453C001CA4CB7600334E66 /* UIImage+MultiFormat.m in Sources */,
 				89453BFD1CA4CB7600334E66 /* SDWebImagePrefetcher.m in Sources */,
-				891F89D11CA6FE970007D488 /* README.md in Sources */,
 				891A1DBE1C9CA5C9002B9DAB /* SettingsViewController.m in Sources */,
 				89453C041CA4CB7600334E66 /* UIView+WebCacheOperation.m in Sources */,
 				891A1DF51C9D0D66002B9DAB /* TVSettings+Additions.m in Sources */,
