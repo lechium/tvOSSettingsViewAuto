@@ -17,6 +17,7 @@
 
 @implementation AppDelegate
 
+
 - (NSArray *)items
 {
     NSDictionary *drScience = @{@"name": @"Science", @"coverArt": @"https://dl.dropboxusercontent.com/u/16129573/dr_science.png", @"detail": @"", @"detailOptions": @[]};
@@ -54,7 +55,7 @@
      
      */
     
-    viewCon.view.backgroundColor = [UIColor blackColor];
+    //viewCon.view.backgroundColor = [UIColor blackColor];
     //viewCon.titleColor = [UIColor colorFromHex:@"DC1916"];
     
     navController.viewControllers = @[viewCon];

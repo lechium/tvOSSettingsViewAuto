@@ -19,6 +19,7 @@
 
 - (id)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier
 {
+
     unfocusedBackgroundColor = [UIColor colorWithWhite:1 alpha:0.2];
     self = [super initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:reuseIdentifier];
     self.contentView.backgroundColor = unfocusedBackgroundColor;
@@ -31,7 +32,8 @@
 {
     [super layoutSubviews];
     self.accessoryView.backgroundColor = unfocusedBackgroundColor;
-    
+    //NSString *recursiveDesc = [self performSelector:@selector(recursiveDescription)];
+    //NSLog(@"%@", recursiveDesc);
 
 }
 
@@ -207,6 +209,7 @@
 {
     [super viewWillAppear:animated];
     self.titleView.text = _backingTitle;
+    //[self.tableView printRecursiveDescription];
     
 }
 
@@ -442,7 +445,11 @@
     cell.selectionStyle = UITableViewCellSelectionStyleNone;
     cell.textLabel.text = currentAsset.name;
     cell.detailTextLabel.text = currentAsset.detailString;
-    
+    if (self.view.backgroundColor == [UIColor blackColor])
+    {
+        cell.textLabel.textColor = [UIColor grayColor];
+        cell.detailTextLabel.textColor = [UIColor lightGrayColor];
+    }
     /*
      
      This is a terrible hack, but without doing this I couldn't figure out a way to make the built in accessory
@@ -453,13 +460,18 @@
      
      */
     
-    UIView *accessoryView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 60, 66)];
-    UIButton *accessoryButton = [[UIButton alloc] initWithFrame:CGRectMake(20, 16.5, 20, 33)];
-    [accessoryButton setImage:[UIImage imageNamed:@"image"] forState:UIControlStateNormal];
-    [accessoryView addSubview:accessoryButton];
+    UIView *accessoryView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 50, 66)];
+    accessoryView.opaque = false;
+    accessoryView.backgroundColor = [UIColor clearColor];
+    UIImageView *accessoryImage = [[UIImageView alloc] initWithFrame:CGRectMake(20, 16.5, 20, 33)];
+    //UIButton *accessoryButton = [[UIButton alloc] initWithFrame:CGRectMake(20, 16.5, 20, 33)];
+    accessoryImage.backgroundColor = [UIColor clearColor];
+    accessoryImage.image = [UIImage imageNamed:@"image"];
+    //[accessoryButton setImage:[UIImage imageNamed:@"image"] forState:UIControlStateNormal];
+    [accessoryView addSubview:accessoryImage];
     cell.accessoryView = accessoryView;
     // cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
-    
+    //cell.printRecursiveDescription;
     return cell;
 }
 
