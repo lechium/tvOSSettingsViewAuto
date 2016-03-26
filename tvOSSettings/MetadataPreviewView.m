@@ -18,7 +18,7 @@
 
 @implementation MetaDataAsset
 
-@synthesize name, assetDescription, metaDictionary, imagePath, detailString, detailOptions;
+@synthesize name, assetDescription, metaDictionary, imagePath, detail, detailOptions;
 
 - (id)initWithDictionary:(NSDictionary *)dict
 {
@@ -26,12 +26,12 @@
     NSMutableDictionary *mutableDict = [dict mutableCopy];
     name = mutableDict[@"name"];
     assetDescription = mutableDict[@"description"];
-    imagePath = mutableDict[@"coverArt"];
-    detailString = mutableDict[@"detail"];
+    imagePath = mutableDict[@"imagePath"];
+    detail = mutableDict[@"detail"];
     detailOptions = mutableDict[@"detailOptions"];
     [mutableDict removeObjectForKey:@"name"];
     [mutableDict removeObjectForKey:@"description"];
-    [mutableDict removeObjectForKey:@"coverArt"];
+    [mutableDict removeObjectForKey:@"imagePath"];
     [mutableDict removeObjectForKey:@"detail"];
     [mutableDict removeObjectForKey:@"detailOptions"];
     metaDictionary = mutableDict;
@@ -274,7 +274,7 @@
     self = [self initForAutoLayout];
     // metadataDict = meta;
     self.metadataAsset = [[MetaDataAsset alloc] initWithDictionary:meta];
-    NSString *coverArt = meta[@"coverart"];
+    NSString *coverArt = meta[@"imagePath"];
     self.coverArt = [UIImage imageNamed:coverArt];
     return self;
 }

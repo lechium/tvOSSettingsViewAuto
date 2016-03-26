@@ -20,18 +20,18 @@
 
 - (NSArray *)items
 {
-    NSDictionary *drScience = @{@"name": @"Science", @"coverArt": @"https://dl.dropboxusercontent.com/u/16129573/dr_science.png", @"detail": @"", @"detailOptions": @[]};
+    NSDictionary *drScience = @{@"name": @"Science", @"imagePath": @"https://dl.dropboxusercontent.com/u/16129573/dr_science.png", @"detail": @"", @"detailOptions": @[]};
     
-    NSDictionary *console = @{@"name": @"Logs", @"coverArt": @"console", @"detail": @"System", @"detailOptions": @[@"System", @"Crash"], @"Version": @"6.6.6", @"Author": @"Jesus", @"descriptions": @"Logs"};
-    NSDictionary *shares = @{@"name": @"Shares", @"coverArt": @"GenericSharepoint", @"detail": @"Local", @"detailOptions": @[@"Local", @"AFP", @"SMB"], @"Version": @"1.2.3", @"Author": @"Hayzus", @"description": @"Different share point information, could be Local, AFP or SMB"};
-    NSDictionary *packages = @{@"name": @"Packages", @"coverArt": @"package", @"detail": @"", @"detailOptions": @[], @"Version": @"3.2.1", @"Author": @"Yars", @"description": @"Packages that are installed"};
-    NSDictionary *pm = @{@"name": @"PackageMaker", @"coverArt": @"packagemaker", @"detail": @"", @"detailOptions": @[], @"Version": @"1.1", @"Author": @"Wut", @"description": @"Create packages"};
-    NSDictionary *reboot = @{@"name": @"Reboot", @"coverArt": @"reboot", @"detail": @"", @"detailOptions": @[], @"description": @"Reboot the system"};
-    NSDictionary *rss = @{@"name": @"RSS", @"coverArt": @"rss", @"detail": @"", @"detailOptions": @[], @"Version": @"1.3.4", @"Author": @"Mr Meeseeks", @"description": @"Your favorite RSS feeds"};
-    NSDictionary *search = @{@"name": @"Search", @"coverArt": @"search", @"detail": @"Local", @"detailOptions": @[], @"Version": @"3.1", @"Author": @"Yaz", @"description": @"Local search for files"};
-    NSDictionary *shutdown = @{@"name": @"Shutdown", @"coverArt": @"Shutdown", @"detail": @"", @"detailOptions": @[], @"Version": @"1.2.4b", @"Author": @"Who", @"description": @"Shutdown your system"};
-    NSDictionary *weather = @{@"name": @"Weather", @"coverArt": @"Weather", @"detail": @"AZ", @"detailOptions": @[@"AZ", @"PA", @"CA"], @"Version": @"3.1.3", @"Author": @"KayBee", @"description": @"Your favorite weather forecast"};
-    NSDictionary *yt = @{@"name": @"YouTube", @"coverArt": @"YTPlaceholder", @"detail": @"", @"detailOptions": @[], @"Version": @"3.2.3", @"Author": @"Casey Jones", @"Things": @"yes", @"description": @"YouTube browser"};
+    NSDictionary *console = @{@"name": @"Logs", @"imagePath": @"console", @"detail": @"System", @"detailOptions": @[@"System", @"Crash"], @"Version": @"6.6.6", @"Author": @"Jesus", @"descriptions": @"Logs"};
+    NSDictionary *shares = @{@"name": @"Shares", @"imagePath": @"GenericSharepoint", @"detail": @"Local", @"detailOptions": @[@"Local", @"AFP", @"SMB"], @"Version": @"1.2.3", @"Author": @"Hayzus", @"description": @"Different share point information, could be Local, AFP or SMB"};
+    NSDictionary *packages = @{@"name": @"Packages", @"imagePath": @"package", @"detail": @"", @"detailOptions": @[], @"Version": @"3.2.1", @"Author": @"Yars", @"description": @"Packages that are installed"};
+    NSDictionary *pm = @{@"name": @"PackageMaker", @"imagePath": @"packagemaker", @"detail": @"", @"detailOptions": @[], @"Version": @"1.1", @"Author": @"Wut", @"description": @"Create packages"};
+    NSDictionary *reboot = @{@"name": @"Reboot", @"imagePath": @"reboot", @"detail": @"", @"detailOptions": @[], @"description": @"Reboot the system"};
+    NSDictionary *rss = @{@"name": @"RSS", @"imagePath": @"rss", @"detail": @"", @"detailOptions": @[], @"Version": @"1.3.4", @"Author": @"Mr Meeseeks", @"description": @"Your favorite RSS feeds"};
+    NSDictionary *search = @{@"name": @"Search", @"imagePath": @"search", @"detail": @"Local", @"detailOptions": @[], @"Version": @"3.1", @"Author": @"Yaz", @"description": @"Local search for files"};
+    NSDictionary *shutdown = @{@"name": @"Shutdown", @"imagePath": @"Shutdown", @"detail": @"", @"detailOptions": @[], @"Version": @"1.2.4b", @"Author": @"Who", @"description": @"Shutdown your system"};
+    NSDictionary *weather = @{@"name": @"Weather", @"imagePath": @"Weather", @"detail": @"AZ", @"detailOptions": @[@"AZ", @"PA", @"CA"], @"Version": @"3.1.3", @"Author": @"KayBee", @"description": @"Your favorite weather forecast"};
+    NSDictionary *yt = @{@"name": @"YouTube", @"imagePath": @"YTPlaceholder", @"detail": @"", @"detailOptions": @[], @"Version": @"3.2.3", @"Author": @"Casey Jones", @"Things": @"yes", @"description": @"YouTube browser"};
     
     
     
@@ -44,7 +44,7 @@
     
     UINavigationController *navController = [UINavigationController new];
     SettingsViewController *viewCon = [SettingsViewController new];
-    
+    viewCon.defaultImageName = @"package";
     viewCon.items = [self items];
     viewCon.title = @"Settings";
     

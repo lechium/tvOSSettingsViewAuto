@@ -26,6 +26,7 @@
 		891A1DF01C9CB59E002B9DAB /* YTPlaceholder.png in Resources */ = {isa = PBXBuildFile; fileRef = 891A1DE61C9CB59E002B9DAB /* YTPlaceholder.png */; };
 		891A1DF21C9D0279002B9DAB /* image.png in Resources */ = {isa = PBXBuildFile; fileRef = 891A1DF11C9D0279002B9DAB /* image.png */; };
 		891A1DF51C9D0D66002B9DAB /* TVSettings+Additions.m in Sources */ = {isa = PBXBuildFile; fileRef = 891A1DF41C9D0D66002B9DAB /* TVSettings+Additions.m */; };
+		891F89D11CA6FE970007D488 /* README.md in Sources */ = {isa = PBXBuildFile; fileRef = 891F89D01CA6FE970007D488 /* README.md */; };
 		89453BD51CA20C0600334E66 /* MetadataPreviewView.m in Sources */ = {isa = PBXBuildFile; fileRef = 89453BD41CA20C0600334E66 /* MetadataPreviewView.m */; };
 		89453BF61CA4CB7600334E66 /* NSData+ImageContentType.m in Sources */ = {isa = PBXBuildFile; fileRef = 89453BD81CA4CB7600334E66 /* NSData+ImageContentType.m */; };
 		89453BF71CA4CB7600334E66 /* SDImageCache.m in Sources */ = {isa = PBXBuildFile; fileRef = 89453BDA1CA4CB7600334E66 /* SDImageCache.m */; };
@@ -75,6 +76,7 @@
 		891A1DF11C9D0279002B9DAB /* image.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = image.png; sourceTree = "<group>"; };
 		891A1DF31C9D0D66002B9DAB /* TVSettings+Additions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "TVSettings+Additions.h"; sourceTree = "<group>"; };
 		891A1DF41C9D0D66002B9DAB /* TVSettings+Additions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "TVSettings+Additions.m"; sourceTree = "<group>"; };
+		891F89D01CA6FE970007D488 /* README.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = SOURCE_ROOT; };
 		89453BD31CA20C0600334E66 /* MetadataPreviewView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MetadataPreviewView.h; sourceTree = "<group>"; };
 		89453BD41CA20C0600334E66 /* MetadataPreviewView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MetadataPreviewView.m; sourceTree = "<group>"; };
 		89453BD71CA4CB7600334E66 /* NSData+ImageContentType.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSData+ImageContentType.h"; sourceTree = "<group>"; };
@@ -140,6 +142,7 @@
 		891A1DB51C9CA5C8002B9DAB /* tvOSSettings */ = {
 			isa = PBXGroup;
 			children = (
+				891F89D01CA6FE970007D488 /* README.md */,
 				89453C061CA4FABD00334E66 /* Categories */,
 				891A1DB91C9CA5C8002B9DAB /* AppDelegate.h */,
 				891A1DBA1C9CA5C9002B9DAB /* AppDelegate.m */,
@@ -331,6 +334,7 @@
 				89453BFE1CA4CB7600334E66 /* UIButton+WebCache.m in Sources */,
 				89453C001CA4CB7600334E66 /* UIImage+MultiFormat.m in Sources */,
 				89453BFD1CA4CB7600334E66 /* SDWebImagePrefetcher.m in Sources */,
+				891F89D11CA6FE970007D488 /* README.md in Sources */,
 				891A1DBE1C9CA5C9002B9DAB /* SettingsViewController.m in Sources */,
 				89453C041CA4CB7600334E66 /* UIView+WebCacheOperation.m in Sources */,
 				891A1DF51C9D0D66002B9DAB /* TVSettings+Additions.m in Sources */,

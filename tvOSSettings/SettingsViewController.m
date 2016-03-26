@@ -116,12 +116,10 @@
 {
   if (!_previewView) {
   
-      //if this data isnt bootstrapped before laying things out the entire layout is broken, so right now you either
-      //have a description from the start or you dont. adding it later will not work properly :(
-      //so if your metadata isnt going to have a description, you need to take it out from here at the start.
-      
-       // _previewView = [[MetadataPreviewView alloc] initWithMetadata:@{@"name": @"Logs", @"coverArt": @"Console", @"detail": @"System", @"detailOptions": @[], @"Version:": @"6.6.6", @"Author:": @"Jesus", @"description": @"Its probably fine"}];
-    _previewView = [[MetadataPreviewView alloc] initWithMetadata:@{@"name": @"Logs", @"coverArt": @"Console", @"detail": @"System", @"detailOptions": @[]}];
+
+      //NOTE: this is a bit of a hack im not sure why its necessary right now, apparently even a blank imagePath prevents
+      //layout issues.
+    _previewView = [[MetadataPreviewView alloc] initWithMetadata:@{@"imagePath": @""}];
         
     }
     return _previewView;
@@ -294,6 +292,8 @@
     {
         self.titleView.textColor = newValue;
     }
+    
+
 }
 
 - (void)viewDidLoad {
@@ -320,6 +320,7 @@
            forKeyPath:@"title"
               options:NSKeyValueObservingOptionNew | NSKeyValueObservingOptionInitial | NSKeyValueObservingOptionOld
               context:NULL];
+    
     
     
     
@@ -355,6 +356,14 @@
 
     MetaDataAsset *currentAsset = self.items[indexPath.row];
 
+    if (currentAsset.imagePath.length == 0)
+    {
+        if (self.defaultImageName.length > 0)
+        {
+            currentAsset.imagePath = self.defaultImageName;
+        }
+    }
+    
     self.detailView.previewView.imageView.image = [UIImage imageNamed:currentAsset.imagePath];
     
     [self.detailView.previewView updateAsset:currentAsset];
@@ -411,10 +420,11 @@
     }
 }
 
+
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     MetaDataAsset *currentAsset = self.items[indexPath.row];
-    NSString *currentDetail = currentAsset.detailString;
+    NSString *currentDetail = currentAsset.detail;
     if (currentDetail.length > 0)
     {
         if ([currentAsset detailOptions].count > 0)
@@ -424,11 +434,11 @@
             if ([currentAsset detailOptions].count > currentIndex)
             {
                 NSString *newDetail = currentAsset.detailOptions[currentIndex];
-                currentAsset.detailString = newDetail;
+                currentAsset.detail = newDetail;
                 [self.tableView reloadData];
             } else {
                 NSString *newDetail = currentAsset.detailOptions[0];
-                currentAsset.detailString = newDetail;
+                currentAsset.detail = newDetail;
                 [self.tableView reloadData];
             }
         }
@@ -444,7 +454,7 @@
     MetaDataAsset *currentAsset = self.items[indexPath.row];
     cell.selectionStyle = UITableViewCellSelectionStyleNone;
     cell.textLabel.text = currentAsset.name;
-    cell.detailTextLabel.text = currentAsset.detailString;
+    cell.detailTextLabel.text = currentAsset.detail;
     if (self.view.backgroundColor == [UIColor blackColor])
     {
         cell.textLabel.textColor = [UIColor grayColor];

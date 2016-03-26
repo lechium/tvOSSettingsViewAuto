@@ -36,7 +36,7 @@
 @property (nonatomic, strong) NSString *name;
 @property (nonatomic, strong) NSString *assetDescription;
 @property (nonatomic, strong) NSString *imagePath;
-@property (nonatomic, strong) NSString *detailString;
+@property (nonatomic, strong) NSString *detail;
 @property (nonatomic, strong) NSArray *detailOptions;
 @property (nonatomic, strong) NSDictionary *metaDictionary;
 
@@ -80,7 +80,7 @@
 
 @property (nonatomic, strong) UIImage *coverArt;
 
-@property (nonatomic, strong) NSString *defaultImageName; //currently unused?
+
 
 @property (nonatomic, strong) UIImageView *imageView;
 @property (nonatomic, strong) UIView *metaContainerView;

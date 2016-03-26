@@ -42,6 +42,7 @@
 @property (nonatomic, strong) UIImageView *imageView;
 @property (nonatomic, strong) MetadataPreviewView *previewView;
 
+
 - (void)updateMetaColor;
 
 @end
@@ -51,8 +52,8 @@
         NSString *_backingTitle;
 }
 
+@property (nonatomic, strong) NSString *defaultImageName;
 @property (nonatomic, strong) NSArray *items;
-
 @property (nonatomic, strong) UIColor *titleColor;
 
 @end
